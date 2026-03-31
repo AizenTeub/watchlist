@@ -1,0 +1,2273 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0"
+    />
+    <title>MCU Watchlist — Univers Marvel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      :root {
+        --bg: #0a0a0f;
+        --bg2: #111118;
+        --bg3: #18181f;
+        --surface: #1e1e27;
+        --surface2: #252530;
+        --border: rgba(255, 255, 255, 0.07);
+        --border2: rgba(255, 255, 255, 0.14);
+        --text: #f0f0f5;
+        --muted: #7a7a8c;
+        --faint: #3a3a4a;
+        --p1: #4a9eff;
+        --p1t: rgba(74, 158, 255, 0.12);
+        --p2: #52c97a;
+        --p2t: rgba(82, 201, 122, 0.12);
+        --p3: #ff8c42;
+        --p3t: rgba(255, 140, 66, 0.12);
+        --p4: #a78bfa;
+        --p4t: rgba(167, 139, 250, 0.12);
+        --p5: #f472b6;
+        --p5t: rgba(244, 114, 182, 0.12);
+        --p6: #34d399;
+        --p6t: rgba(52, 211, 153, 0.12);
+        --ease: cubic-bezier(0.4, 0, 0.2, 1);
+        --fs: 17px;
+      }
+      html.light {
+        --bg: #f2f2f6;
+        --bg2: #e8e8ee;
+        --bg3: #dededc;
+        --surface: #ffffff;
+        --surface2: #f7f7fb;
+        --border: rgba(0, 0, 0, 0.08);
+        --border2: rgba(0, 0, 0, 0.16);
+        --text: #0f0f14;
+        --muted: #64647a;
+        --faint: #c0c0cc;
+        --p1: #1a6fd4;
+        --p1t: rgba(26, 111, 212, 0.1);
+        --p2: #1a7f42;
+        --p2t: rgba(26, 127, 66, 0.1);
+        --p3: #b85510;
+        --p3t: rgba(184, 85, 16, 0.1);
+        --p4: #6d4ed4;
+        --p4t: rgba(109, 78, 212, 0.1);
+        --p5: #b82878;
+        --p5t: rgba(184, 40, 120, 0.1);
+        --p6: #0a8f5e;
+        --p6t: rgba(10, 143, 94, 0.1);
+      }
+      html {
+        scroll-behavior: smooth;
+        font-size: var(--fs);
+      }
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: "DM Sans", sans-serif;
+        font-weight: 400;
+        min-height: 100vh;
+        line-height: 1.6;
+        transition:
+          background 0.3s,
+          color 0.3s;
+      }
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+        opacity: 0.025;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      /* LAYOUT */
+      .app {
+        position: relative;
+        z-index: 1;
+        max-width: 1020px;
+        margin: 0 auto;
+        padding: 2.5rem 2rem 5rem;
+      }
+
+      /* HEADER */
+      header {
+        margin-bottom: 2.5rem;
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 1rem;
+        flex-wrap: wrap;
+      }
+      .logo-row {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 0.4rem;
+      }
+      .logo-shield {
+        width: 44px;
+        height: 44px;
+        background: linear-gradient(135deg, var(--p1) 0%, #2563eb 100%);
+        border-radius: 50% 50% 50% 50%/60% 60% 40% 40%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        box-shadow: 0 0 28px rgba(74, 158, 255, 0.4);
+      }
+      h1 {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: clamp(2.2rem, 5vw, 3.4rem);
+        letter-spacing: 0.04em;
+        color: var(--text);
+        line-height: 1;
+      }
+      h1 span {
+        color: var(--p1);
+      }
+      .subtitle {
+        font-size: 0.82rem;
+        color: var(--muted);
+        margin-top: 5px;
+        letter-spacing: 0.01em;
+      }
+      .header-controls {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        padding-top: 6px;
+      }
+      .icon-btn {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        border: 1px solid var(--border2);
+        background: var(--surface);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition:
+          background 0.2s,
+          transform 0.2s var(--ease);
+        color: var(--muted);
+        flex-shrink: 0;
+        position: relative;
+      }
+      .icon-btn:hover {
+        transform: scale(1.1);
+        color: var(--text);
+        background: var(--surface2);
+      }
+      .icon-btn:active {
+        transform: scale(0.94);
+      }
+      .icon-btn .imoon,
+      .icon-btn .isun {
+        position: absolute;
+        transition:
+          opacity 0.25s,
+          transform 0.3s var(--ease);
+      }
+      .icon-btn .isun {
+        opacity: 0;
+        transform: rotate(90deg) scale(0.6);
+      }
+      html.light .icon-btn .imoon {
+        opacity: 0;
+        transform: rotate(-90deg) scale(0.6);
+      }
+      html.light .icon-btn .isun {
+        opacity: 1;
+        transform: rotate(0) scale(1);
+      }
+
+      /* TIME CARDS */
+      .time-cards {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+        margin-bottom: 1.5rem;
+      }
+      .tc {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 1.1rem 1.3rem;
+        position: relative;
+        overflow: hidden;
+        transition:
+          background 0.3s,
+          border-color 0.3s;
+      }
+      .tc::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          135deg,
+          var(--tc-acc, 0.03) 0%,
+          transparent 65%
+        );
+        pointer-events: none;
+      }
+      .tc-lbl {
+        font-size: 0.7rem;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.09em;
+        margin-bottom: 0.3rem;
+      }
+      .tc-val {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 2rem;
+        letter-spacing: 0.04em;
+        color: var(--text);
+        line-height: 1;
+        transition: color 0.3s;
+      }
+      .tc-sub {
+        font-size: 0.7rem;
+        color: var(--muted);
+        margin-top: 4px;
+      }
+
+      /* GLOBAL PROGRESS */
+      .global-prog {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        padding: 1.3rem 1.6rem;
+        margin-bottom: 1.5rem;
+        position: relative;
+        overflow: hidden;
+        transition: background 0.3s;
+      }
+      .global-prog::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          135deg,
+          rgba(74, 158, 255, 0.04),
+          transparent 60%
+        );
+        pointer-events: none;
+      }
+      .prog-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        margin-bottom: 12px;
+      }
+      .prog-count {
+        font-size: 0.85rem;
+        color: var(--muted);
+      }
+      .prog-pct {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 2.4rem;
+        letter-spacing: 0.04em;
+        color: var(--text);
+        line-height: 1;
+      }
+      .prog-track {
+        height: 8px;
+        background: var(--faint);
+        border-radius: 99px;
+        overflow: hidden;
+      }
+      .prog-fill {
+        height: 100%;
+        border-radius: 99px;
+        background: linear-gradient(90deg, var(--p1), var(--p4));
+        transition: width 0.5s var(--ease);
+        width: 0%;
+      }
+      .prog-phases {
+        display: flex;
+        gap: 6px;
+        margin-top: 14px;
+        flex-wrap: wrap;
+      }
+      .mini-stat {
+        font-size: 0.72rem;
+        padding: 3px 11px;
+        border-radius: 99px;
+        border: 1px solid var(--border);
+        color: var(--muted);
+        transition:
+          color 0.3s,
+          border-color 0.3s;
+        white-space: nowrap;
+        cursor: default;
+      }
+      .mini-stat.done-phase {
+        border-color: var(--p2);
+        color: var(--p2);
+      }
+
+      /* CONTROLS */
+      .controls {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 1.5rem;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+      .search-wrap {
+        position: relative;
+        flex: 1;
+        min-width: 180px;
+      }
+      .search-icon {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--muted);
+        pointer-events: none;
+      }
+      #search {
+        width: 100%;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 11px;
+        color: var(--text);
+        font-family: "DM Sans", sans-serif;
+        font-size: 0.88rem;
+        padding: 10px 14px 10px 36px;
+        outline: none;
+        transition:
+          border-color 0.2s,
+          background 0.2s;
+      }
+      #search::placeholder {
+        color: var(--muted);
+      }
+      #search:focus {
+        border-color: var(--border2);
+        background: var(--bg3);
+      }
+      .pills {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+      }
+      .pill {
+        font-family: "DM Sans", sans-serif;
+        font-size: 0.78rem;
+        font-weight: 500;
+        padding: 8px 18px;
+        border-radius: 99px;
+        border: 1px solid var(--border);
+        background: transparent;
+        color: var(--muted);
+        cursor: pointer;
+        transition: all 0.18s var(--ease);
+        white-space: nowrap;
+      }
+      .pill:hover {
+        border-color: var(--border2);
+        color: var(--text);
+      }
+      .pill.active {
+        background: var(--text);
+        color: var(--bg);
+        border-color: var(--text);
+      }
+      .pill.active-film {
+        background: rgba(74, 158, 255, 0.15);
+        color: var(--p1);
+        border-color: rgba(74, 158, 255, 0.4);
+      }
+      .pill.active-serie {
+        background: rgba(244, 114, 182, 0.15);
+        color: var(--p5);
+        border-color: rgba(244, 114, 182, 0.4);
+      }
+      .pill.active-must {
+        background: rgba(239, 68, 68, 0.15);
+        color: #ef4444;
+        border-color: rgba(239, 68, 68, 0.4);
+      }
+      .btn-reset {
+        font-family: "DM Sans", sans-serif;
+        font-size: 0.78rem;
+        padding: 8px 14px;
+        border-radius: 11px;
+        border: 1px solid var(--border);
+        background: transparent;
+        color: var(--muted);
+        cursor: pointer;
+        transition: all 0.18s;
+        white-space: nowrap;
+      }
+      .btn-reset:hover {
+        border-color: var(--border2);
+        color: var(--text);
+      }
+
+      /* PHASE BLOCKS */
+      .phase-block {
+        margin-bottom: 2.2rem;
+      }
+      .phase-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 12px;
+        padding: 0 2px;
+      }
+      .phase-line {
+        height: 1px;
+        flex: 1;
+        background: var(--border);
+      }
+      .phase-tag {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 0.85rem;
+        letter-spacing: 0.1em;
+        padding: 5px 16px;
+        border-radius: 99px;
+        border: 1px solid;
+        white-space: nowrap;
+      }
+      .phase-stat-pill {
+        font-size: 0.72rem;
+        color: var(--muted);
+        white-space: nowrap;
+      }
+      .phase-minibar {
+        height: 2px;
+        border-radius: 99px;
+        background: var(--faint);
+        overflow: hidden;
+        margin-bottom: 10px;
+      }
+      .phase-minibar-fill {
+        height: 100%;
+        border-radius: 99px;
+        width: 0%;
+        transition: width 0.5s var(--ease);
+      }
+      .p1 .phase-tag {
+        color: var(--p1);
+        border-color: rgba(74, 158, 255, 0.3);
+        background: var(--p1t);
+      }
+      .p2 .phase-tag {
+        color: var(--p2);
+        border-color: rgba(82, 201, 122, 0.3);
+        background: var(--p2t);
+      }
+      .p3 .phase-tag {
+        color: var(--p3);
+        border-color: rgba(255, 140, 66, 0.3);
+        background: var(--p3t);
+      }
+      .p4 .phase-tag {
+        color: var(--p4);
+        border-color: rgba(167, 139, 250, 0.3);
+        background: var(--p4t);
+      }
+      .p5 .phase-tag {
+        color: var(--p5);
+        border-color: rgba(244, 114, 182, 0.3);
+        background: var(--p5t);
+      }
+      .p6 .phase-tag {
+        color: var(--p6);
+        border-color: rgba(52, 211, 153, 0.3);
+        background: var(--p6t);
+      }
+      .p1 .phase-minibar-fill {
+        background: var(--p1);
+      }
+      .p2 .phase-minibar-fill {
+        background: var(--p2);
+      }
+      .p3 .phase-minibar-fill {
+        background: var(--p3);
+      }
+      .p4 .phase-minibar-fill {
+        background: var(--p4);
+      }
+      .p5 .phase-minibar-fill {
+        background: var(--p5);
+      }
+      .p6 .phase-minibar-fill {
+        background: var(--p6);
+      }
+
+      /* FILM ROWS */
+      .film-rows {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .film-row {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        padding: 16px 18px;
+        border-radius: 16px;
+        cursor: pointer;
+        border: 1px solid transparent;
+        transition:
+          background 0.15s,
+          border-color 0.15s,
+          opacity 0.3s var(--ease);
+        user-select: none;
+        position: relative;
+        overflow: hidden;
+      }
+      .film-row::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        border-radius: 0 4px 4px 0;
+        opacity: 0;
+        transition: opacity 0.2s;
+      }
+      .p1 .film-row::before {
+        background: var(--p1);
+      }
+      .p2 .film-row::before {
+        background: var(--p2);
+      }
+      .p3 .film-row::before {
+        background: var(--p3);
+      }
+      .p4 .film-row::before {
+        background: var(--p4);
+      }
+      .p5 .film-row::before {
+        background: var(--p5);
+      }
+      .p6 .film-row::before {
+        background: var(--p6);
+      }
+      .film-row:hover {
+        background: var(--surface);
+        border-color: var(--border);
+      }
+      .film-row:hover::before {
+        opacity: 1;
+      }
+      .film-row:active {
+        transform: scale(0.998);
+      }
+      .film-row.done {
+        opacity: 0.32;
+      }
+      .film-row.done .film-title {
+        text-decoration: line-through;
+        color: var(--muted);
+      }
+      .film-row.done .film-desc {
+        display: none;
+      }
+      .film-row.hidden {
+        display: none;
+      }
+      @keyframes rowpop {
+        0% {
+          transform: scale(1);
+        }
+        45% {
+          transform: scale(1.014);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+      .film-row.just-checked {
+        animation: rowpop 0.32s var(--ease);
+      }
+
+      /* POSTER */
+      .poster-wrap {
+        flex-shrink: 0;
+        width: 72px;
+        height: 108px;
+        border-radius: 9px;
+        overflow: hidden;
+        border: 1px solid var(--border2);
+        background: var(--faint);
+      }
+      .poster-wrap img,
+      .poster-wrap svg {
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
+
+      /* CHECKBOX */
+      .cb {
+        width: 26px;
+        height: 26px;
+        border-radius: 8px;
+        border: 1.5px solid var(--faint);
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition:
+          background 0.2s,
+          border-color 0.2s,
+          transform 0.15s;
+        align-self: center;
+      }
+      .film-row:hover .cb {
+        border-color: var(--border2);
+      }
+      .film-row.done .cb {
+        transform: scale(0.88);
+      }
+      .p1.done .cb {
+        background: var(--p1t);
+        border-color: var(--p1);
+      }
+      .p2.done .cb {
+        background: var(--p2t);
+        border-color: var(--p2);
+      }
+      .p3.done .cb {
+        background: var(--p3t);
+        border-color: var(--p3);
+      }
+      .p4.done .cb {
+        background: var(--p4t);
+        border-color: var(--p4);
+      }
+      .p5.done .cb {
+        background: var(--p5t);
+        border-color: var(--p5);
+      }
+      .p6.done .cb {
+        background: var(--p6t);
+        border-color: var(--p6);
+      }
+      .check-svg {
+        display: none;
+      }
+      .film-row.done .check-svg {
+        display: block;
+      }
+
+      /* FILM INFO */
+      .film-info {
+        flex: 1;
+        min-width: 0;
+      }
+      .film-top {
+        display: flex;
+        align-items: baseline;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-bottom: 6px;
+      }
+      .film-num {
+        font-size: 0.75rem;
+        color: var(--faint);
+        flex-shrink: 0;
+        font-feature-settings: "tnum";
+        font-weight: 500;
+      }
+      .film-title {
+        font-size: 1.08rem;
+        color: var(--text);
+        font-weight: 500;
+        line-height: 1.3;
+        transition: color 0.2s;
+      }
+      .film-meta {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        flex-wrap: wrap;
+        margin-bottom: 7px;
+      }
+      .film-desc {
+        font-size: 0.82rem;
+        color: var(--muted);
+        line-height: 1.6;
+        font-style: italic;
+        margin-top: 2px;
+      }
+
+      /* BADGES */
+      .badge {
+        font-size: 0.72rem;
+        padding: 3px 10px;
+        border-radius: 99px;
+        flex-shrink: 0;
+        font-weight: 500;
+        border: 1px solid;
+        white-space: nowrap;
+      }
+      .imp-must {
+        color: #ef4444;
+        border-color: rgba(239, 68, 68, 0.35);
+        background: rgba(239, 68, 68, 0.08);
+      }
+      .imp-film {
+        color: var(--p1);
+        border-color: rgba(74, 158, 255, 0.3);
+        background: rgba(74, 158, 255, 0.07);
+      }
+      .imp-serie {
+        color: var(--p5);
+        border-color: rgba(244, 114, 182, 0.3);
+        background: rgba(244, 114, 182, 0.07);
+      }
+      .imp-bonus {
+        color: var(--muted);
+        border-color: var(--border);
+        background: transparent;
+      }
+      .dur-badge {
+        font-size: 0.72rem;
+        color: var(--muted);
+        border: 1px solid var(--border);
+        border-radius: 99px;
+        padding: 3px 10px;
+        white-space: nowrap;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .cat-badge {
+        font-size: 0.72rem;
+        padding: 3px 10px;
+        border-radius: 99px;
+        border: 1px solid var(--border);
+        color: var(--muted);
+        white-space: nowrap;
+      }
+
+      /* RATING */
+      .rating-wrap {
+        flex-shrink: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        min-width: 110px;
+      }
+      .stars {
+        display: flex;
+        gap: 4px;
+      }
+      .star {
+        font-size: 1.35rem;
+        cursor: pointer;
+        color: var(--faint);
+        transition:
+          color 0.12s,
+          transform 0.12s;
+        line-height: 1;
+        border: none;
+        background: none;
+        padding: 1px;
+      }
+      .star:hover,
+      .star.hovered,
+      .star.active {
+        color: #facc15;
+      }
+      .star:hover,
+      .star.hovered {
+        transform: scale(1.3);
+      }
+      .star.active {
+        transform: scale(1.05);
+      }
+      .rating-score {
+        font-size: 0.75rem;
+        font-weight: 500;
+        padding: 3px 11px;
+        border-radius: 99px;
+        border: 1px solid;
+        min-width: 42px;
+        text-align: center;
+        transition:
+          background 0.25s,
+          color 0.25s,
+          border-color 0.25s;
+        white-space: nowrap;
+      }
+      .s0 {
+        color: var(--muted);
+        border-color: var(--border);
+        background: transparent;
+      }
+      .s1,
+      .s2 {
+        color: #ef4444;
+        border-color: rgba(239, 68, 68, 0.4);
+        background: rgba(239, 68, 68, 0.1);
+      }
+      .s3 {
+        color: #f97316;
+        border-color: rgba(249, 115, 22, 0.4);
+        background: rgba(249, 115, 22, 0.1);
+      }
+      .s4 {
+        color: #eab308;
+        border-color: rgba(234, 179, 8, 0.4);
+        background: rgba(234, 179, 8, 0.1);
+      }
+      .s5 {
+        color: #22c55e;
+        border-color: rgba(34, 197, 94, 0.4);
+        background: rgba(34, 197, 94, 0.1);
+      }
+
+      /* EMPTY */
+      .empty {
+        text-align: center;
+        padding: 3rem 0;
+        font-size: 0.9rem;
+        color: var(--faint);
+        display: none;
+      }
+      .empty svg {
+        margin: 0 auto 14px;
+        display: block;
+        opacity: 0.3;
+      }
+
+      /* BANNER */
+      .banner {
+        display: none;
+        background: linear-gradient(
+          135deg,
+          rgba(74, 158, 255, 0.12),
+          rgba(167, 139, 250, 0.12)
+        );
+        border: 1px solid rgba(167, 139, 250, 0.3);
+        border-radius: 18px;
+        padding: 1.5rem;
+        text-align: center;
+        margin-bottom: 1.5rem;
+        animation: bannerIn 0.5s var(--ease);
+      }
+      @keyframes bannerIn {
+        from {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+      .banner p {
+        font-size: 0.9rem;
+        color: var(--text);
+      }
+      .banner strong {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 1.8rem;
+        letter-spacing: 0.05em;
+        display: block;
+        margin-bottom: 6px;
+        background: linear-gradient(90deg, var(--p1), var(--p4));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      /* CONFETTI */
+      #confetti-canvas {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 9999;
+        display: none;
+      }
+
+      /* FOOTER */
+      footer {
+        margin-top: 3rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      footer p {
+        font-size: 0.78rem;
+        color: var(--faint);
+      }
+
+      /* SCROLLBAR */
+      ::-webkit-scrollbar {
+        width: 7px;
+      }
+      ::-webkit-scrollbar-track {
+        background: var(--bg);
+      }
+      ::-webkit-scrollbar-thumb {
+        background: var(--faint);
+        border-radius: 99px;
+      }
+
+      /* ANIMATIONS */
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(14px);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+      .phase-block {
+        animation: fadeUp 0.45s var(--ease) both;
+      }
+      .phase-block:nth-child(1) {
+        animation-delay: 0.04s;
+      }
+      .phase-block:nth-child(2) {
+        animation-delay: 0.09s;
+      }
+      .phase-block:nth-child(3) {
+        animation-delay: 0.14s;
+      }
+      .phase-block:nth-child(4) {
+        animation-delay: 0.19s;
+      }
+      .phase-block:nth-child(5) {
+        animation-delay: 0.24s;
+      }
+      .phase-block:nth-child(6) {
+        animation-delay: 0.29s;
+      }
+
+      /* RESPONSIVE */
+      @media (max-width: 640px) {
+        .app {
+          padding: 1.5rem 1rem 4rem;
+        }
+        .time-cards {
+          grid-template-columns: 1fr 1fr;
+        }
+        .film-desc {
+          display: none;
+        }
+        .rating-wrap {
+          min-width: 70px;
+        }
+        .controls {
+          flex-direction: column;
+        }
+        .pills {
+          width: 100%;
+        }
+      }
+      @media (max-width: 400px) {
+        .time-cards {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="confetti-canvas"></canvas>
+    <div class="app">
+      <header>
+        <div>
+          <div class="logo-row">
+            <div class="logo-shield">
+              <svg width="22" height="22" viewBox="0 0 18 18" fill="none">
+                <path
+                  d="M9 2L16 5V10C16 13.5 12.5 16.5 9 17C5.5 16.5 2 13.5 2 10V5L9 2Z"
+                  fill="white"
+                  fill-opacity=".92"
+                />
+                <path
+                  d="M6 9L8 11L12 7"
+                  stroke="#2563eb"
+                  stroke-width="1.9"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </div>
+            <h1>MCU <span>Watchlist</span></h1>
+          </div>
+          <p class="subtitle">
+            Tous les films &amp; séries — ordre de sortie officiel · Phases 1 à
+            6
+          </p>
+        </div>
+        <div class="header-controls">
+          <button class="icon-btn" onclick="toggleTheme()" aria-label="Thème">
+            <svg
+              class="imoon"
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+            >
+              <path
+                d="M14 10.5A6.5 6.5 0 0 1 5.5 2a6.5 6.5 0 1 0 8.5 8.5z"
+                fill="currentColor"
+                opacity=".9"
+              />
+            </svg>
+            <svg
+              class="isun"
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+            >
+              <circle cx="8" cy="8" r="3.5" fill="currentColor" />
+              <path
+                d="M8 1.5V3M8 13v1.5M1.5 8H3m10 0h1.5M3.4 3.4l1.1 1.1m7 7l1.1 1.1M3.4 12.6l1.1-1.1m7-7l1.1-1.1"
+                stroke="currentColor"
+                stroke-width="1.3"
+                stroke-linecap="round"
+              />
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <div id="completion-banner" class="banner">
+        <strong>Félicitations, Avenger !</strong>
+        <p>Tu as regardé l'intégralité du MCU. Impressionnant.</p>
+      </div>
+
+      <div class="time-cards">
+        <div class="tc" style="--tc-acc: rgba(74, 158, 255, 0.07)">
+          <div class="tc-lbl">Temps total MCU</div>
+          <div class="tc-val" id="time-total">—</div>
+          <div class="tc-sub" id="time-total-sub">59 titres</div>
+        </div>
+        <div class="tc" style="--tc-acc: rgba(82, 201, 122, 0.07)">
+          <div class="tc-lbl">Temps regardé</div>
+          <div class="tc-val" id="time-done" style="color: var(--p2)">0h</div>
+          <div class="tc-sub" id="time-done-sub">0 titres cochés</div>
+        </div>
+        <div class="tc" style="--tc-acc: rgba(255, 140, 66, 0.07)">
+          <div class="tc-lbl">Temps restant</div>
+          <div class="tc-val" id="time-left" style="color: var(--p3)">—</div>
+          <div class="tc-sub" id="time-left-sub">titres à voir</div>
+        </div>
+      </div>
+
+      <div class="global-prog">
+        <div class="prog-top">
+          <span class="prog-count" id="prog-label">0 / 59 vus</span>
+          <span class="prog-pct" id="prog-pct">0%</span>
+        </div>
+        <div class="prog-track">
+          <div class="prog-fill" id="prog-bar"></div>
+        </div>
+        <div class="prog-phases" id="mini-stats"></div>
+      </div>
+
+      <div class="controls">
+        <div class="search-wrap">
+          <svg
+            class="search-icon"
+            width="15"
+            height="15"
+            viewBox="0 0 14 14"
+            fill="none"
+          >
+            <circle
+              cx="6"
+              cy="6"
+              r="4.5"
+              stroke="currentColor"
+              stroke-width="1.3"
+            />
+            <path
+              d="M10 10l2.5 2.5"
+              stroke="currentColor"
+              stroke-width="1.3"
+              stroke-linecap="round"
+            />
+          </svg>
+          <input id="search" type="text" placeholder="Rechercher un titre…" />
+        </div>
+        <div class="pills">
+          <button
+            class="pill active"
+            data-filter="all"
+            onclick="setFilter('all')"
+          >
+            Tout
+          </button>
+          <button class="pill" data-filter="film" onclick="setFilter('film')">
+            Films
+          </button>
+          <button class="pill" data-filter="série" onclick="setFilter('serie')">
+            Séries
+          </button>
+          <button class="pill" data-filter="must" onclick="setFilter('must')">
+            Essentiels
+          </button>
+        </div>
+        <button class="btn-reset" onclick="resetAll()">Réinitialiser</button>
+      </div>
+
+      <div id="list"></div>
+
+      <div class="empty" id="empty-msg">
+        <svg width="36" height="36" viewBox="0 0 32 32" fill="none">
+          <circle
+            cx="14"
+            cy="14"
+            r="9"
+            stroke="currentColor"
+            stroke-width="2"
+          />
+          <path
+            d="M22 22l6 6"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+          />
+        </svg>
+        Aucun résultat trouvé
+      </div>
+
+      <footer>
+        <p>Sources : Marvel Studios · MCU Phase 1–6 · 2025</p>
+        <p id="footer-stat"></p>
+      </footer>
+    </div>
+
+    <script>
+      /* ─── DATA ─── */
+      const items = [
+        {
+          phase: 1,
+          n: 1,
+          key: "im1",
+          type: "film",
+          imp: "must",
+          dur: 126,
+          cat: "Super-héros · Action",
+          title: "Iron Man",
+          desc: "Tony Stark, milliardaire génie, crée une armure high-tech pour s\'échapper de ses ravisseurs et devient Iron Man.",
+          poster:
+            "https://image.tmdb.org/t/p/original/kNKUCNLu1lZDGAHOBEHxR6psYHx.jpg",
+        },
+        {
+          phase: 1,
+          n: 2,
+          key: "ca1",
+          type: "film",
+          imp: "must",
+          dur: 124,
+          cat: "Super-héros · Guerre",
+          title: "Captain America: The First Avenger",
+          desc: "Steve Rogers, frêle soldat de la Seconde Guerre mondiale, devient le premier super-soldat pour combattre HYDRA.",
+          poster:
+            "https://image.tmdb.org/t/p/original/l1SP3gyHA5ZEuf72WKx5ihtZZFO.jpg",
+        },
+        {
+          phase: 1,
+          n: 3,
+          key: "im2",
+          type: "film",
+          imp: "film",
+          dur: 124,
+          cat: "Super-héros · Action",
+          title: "Iron Man 2",
+          desc: "Tony Stark fait face à un rival russe utilisant sa propre technologie, tandis que son armure l\'empoisonne.",
+          poster:
+            "https://image.tmdb.org/t/p/original/g9DSeSozGi4zpUyeOYZYMNmIv9O.jpg",
+        },
+        {
+          phase: 1,
+          n: 4,
+          key: "thor1",
+          type: "film",
+          imp: "film",
+          dur: 115,
+          cat: "Super-héros · Fantasy",
+          title: "Thor",
+          desc: "Le dieu asgardien du tonnerre est banni sur Terre et doit prouver sa valeur pour regagner son pouvoir.",
+          poster:
+            "https://image.tmdb.org/t/p/original/q8pF6s9b9veTQvxTqMDIQf9nJKi.jpg",
+        },
+        {
+          phase: 1,
+          n: 5,
+          key: "hulk",
+          type: "film",
+          imp: "film",
+          dur: 112,
+          cat: "Super-héros · Action",
+          title: "L\'Incroyable Hulk",
+          desc: "Bruce Banner traqué par l\'armée américaine cherche un remède à sa transformation en monstre de rage.",
+          poster:
+            "https://image.tmdb.org/t/p/original/cImKVGUiEnwLsNUyoMA0a0na2y5.jpg",
+        },
+        {
+          phase: 1,
+          n: 6,
+          key: "av1",
+          type: "film",
+          imp: "must",
+          dur: 143,
+          cat: "Super-héros · Équipe",
+          title: "The Avengers",
+          desc: "Nick Fury rassemble Iron Man, Thor, Cap, Hulk, Black Widow et Hawkeye pour repousser Loki.",
+          poster:
+            "https://image.tmdb.org/t/p/original/ylsAO88v2tF0iXRFojPa0UaAJf1.jpg",
+        },
+        {
+          phase: 2,
+          n: 7,
+          key: "im3",
+          type: "film",
+          imp: "film",
+          dur: 130,
+          cat: "Super-héros · Thriller",
+          title: "Iron Man 3",
+          desc: "Tony Stark face à un terroriste nommé le Mandarin et à ses propres traumatismes post-Avengers.",
+          poster:
+            "https://image.tmdb.org/t/p/original/ylsAO88v2tF0iXRFojPa0UaAJf1.jpg",
+        },
+        {
+          phase: 2,
+          n: 8,
+          key: "thor2",
+          type: "film",
+          imp: "film",
+          dur: 112,
+          cat: "Super-héros · Fantasy",
+          title: "Thor: The Dark World",
+          desc: "Thor combat les Elfes Noirs qui cherchent à plonger l\'univers dans l\'obscurité grâce à l\'Éther.",
+          poster:
+            "https://image.tmdb.org/t/p/original/eAIGX0nlwlb5sMb4uDRGNFqMyG9.jpg",
+        },
+        {
+          phase: 2,
+          n: 9,
+          key: "ca2",
+          type: "film",
+          imp: "must",
+          dur: 136,
+          cat: "Super-héros · Espionnage",
+          title: "Captain America: The Winter Soldier",
+          desc: "Steve Rogers découvre une infiltration d\'HYDRA au sein du SHIELD et affronte un mystérieux assassin.",
+          poster:
+            "https://image.tmdb.org/t/p/original/n3Xa8g1sWrUVUal6zk0OoC9ARo1.jpg",
+        },
+        {
+          phase: 2,
+          n: 10,
+          key: "gotg1",
+          type: "film",
+          imp: "must",
+          dur: 122,
+          cat: "Super-héros · Space Opera",
+          title: "Les Gardiens de la Galaxie",
+          desc: "Peter Quill forme une équipe improbable de hors-la-loi pour sauver la galaxie d\'un fanatique kree.",
+          poster:
+            "https://image.tmdb.org/t/p/original/9a6fGeSV5kffyNPPMWCPhLOhLdJ.jpg",
+        },
+        {
+          phase: 2,
+          n: 11,
+          key: "gotg2",
+          type: "film",
+          imp: "film",
+          dur: 136,
+          cat: "Super-héros · Space Opera",
+          title: "Les Gardiens de la Galaxie Vol. 2",
+          desc: "Les Gardiens découvrent les origines de Peter Quill et font face à son mystérieux père biologique.",
+          poster:
+            "https://image.tmdb.org/t/p/original/brgkPEPQJNGLuKRy8omRTcDfDuL.jpg",
+        },
+        {
+          phase: 2,
+          n: 12,
+          key: "av2",
+          type: "film",
+          imp: "must",
+          dur: 141,
+          cat: "Super-héros · Équipe",
+          title: "Avengers: Age of Ultron",
+          desc: "Tony Stark crée accidentellement Ultron, une IA meurtrière qui menace l\'extinction de l\'humanité.",
+          poster:
+            "https://image.tmdb.org/t/p/original/A0tw88n1byyR2vodhJMlFPQGQgF.jpg",
+        },
+        {
+          phase: 2,
+          n: 13,
+          key: "antman1",
+          type: "film",
+          imp: "film",
+          dur: 117,
+          cat: "Super-héros · Comédie",
+          title: "Ant-Man",
+          desc: "Scott Lang, cambrioleur repenti, hérite du costume Ant-Man et doit déjouer un plan criminel.",
+          poster:
+            "https://image.tmdb.org/t/p/original/hAH2Rt2WvfMBK2tZDLMNuUTUwxG.jpg",
+        },
+        {
+          phase: 3,
+          n: 14,
+          key: "ca3",
+          type: "film",
+          imp: "must",
+          dur: 147,
+          cat: "Super-héros · Politique",
+          title: "Captain America: Civil War",
+          desc: "Les Avengers se divisent sur la question de la surveillance des super-héros. Tony vs Steve.",
+          poster:
+            "https://image.tmdb.org/t/p/original/i2nc9IAP1xRWoa3MgeR7ldsshkV.jpg",
+        },
+        {
+          phase: 3,
+          n: 15,
+          key: "bp1",
+          type: "film",
+          imp: "must",
+          dur: 134,
+          cat: "Super-héros · Afrofuturisme",
+          title: "Black Panther",
+          desc: "T\'Challa retourne au Wakanda pour y régner mais son trône est contesté par Erik Killmonger.",
+          poster: "posters/bp1.jpg",
+        },
+        {
+          phase: 3,
+          n: 16,
+          key: "ds1",
+          type: "film",
+          imp: "must",
+          dur: 115,
+          cat: "Super-héros · Mysticisme",
+          title: "Doctor Strange",
+          desc: "Chirurgien brillant, Stephen Strange découvre les arts mystiques et devient gardien de la Terre.",
+          poster: "posters/ds1.jpg",
+        },
+        {
+          phase: 3,
+          n: 17,
+          key: "sm1",
+          type: "film",
+          imp: "film",
+          dur: 133,
+          cat: "Super-héros · Lycée",
+          title: "Spider-Man: Homecoming",
+          desc: "Peter Parker jongle entre le lycée et sa vie de super-héros, tout en affrontant le Vautour.",
+          poster: "posters/sm1.jpg",
+        },
+        {
+          phase: 3,
+          n: 18,
+          key: "thor3",
+          type: "film",
+          imp: "must",
+          dur: 130,
+          cat: "Super-héros · Comédie",
+          title: "Thor: Ragnarok",
+          desc: "Thor prisonnier doit s\'échapper d\'une planète de gladiateurs pour sauver Asgard de sa destruction.",
+          poster: "posters/thor3.jpg",
+        },
+        {
+          phase: 3,
+          n: 19,
+          key: "antman2",
+          type: "film",
+          imp: "film",
+          dur: 118,
+          cat: "Super-héros · Comédie",
+          title: "Ant-Man et la Guêpe",
+          desc: "Scott Lang aide Hank Pym et Hope Van Dyne à sauver Janet de la dimension quantique.",
+          poster: "posters/antman2.jpg",
+        },
+        {
+          phase: 3,
+          n: 20,
+          key: "iw",
+          type: "film",
+          imp: "must",
+          dur: 149,
+          cat: "Super-héros · Épique",
+          title: "Avengers: Infinity War",
+          desc: "Thanos rassemble les Pierres de l\'Infini pour effacer la moitié de la vie dans l\'univers.",
+          poster: "posters/iw.jpg",
+        },
+        {
+          phase: 3,
+          n: 21,
+          key: "eg",
+          type: "film",
+          imp: "must",
+          dur: 181,
+          cat: "Super-héros · Épique",
+          title: "Avengers: Endgame",
+          desc: "Les Avengers voyagent dans le temps pour inverser le claquement de doigts de Thanos. L\'ultime bataille.",
+          poster: "posters/eg.jpg",
+        },
+        {
+          phase: 3,
+          n: 22,
+          key: "sm2",
+          type: "film",
+          imp: "film",
+          dur: 129,
+          cat: "Super-héros · Aventure",
+          title: "Spider-Man: Far From Home",
+          desc: "Peter Parker en vacances en Europe fait face à Mysterio et aux conséquences de la mort de Stark.",
+          poster: "posters/sm2.jpg",
+        },
+        {
+          phase: 4,
+          n: 23,
+          key: "wanda",
+          type: "série",
+          imp: "must",
+          dur: 279,
+          cat: "Drame · Mystère",
+          title: "WandaVision",
+          desc: "Wanda et Vision vivent dans des sitcoms de différentes époques. Une réalité parfaite qui cache l\'horreur.",
+          poster: "posters/wanda.jpg",
+        },
+        {
+          phase: 4,
+          n: 24,
+          key: "falcon",
+          type: "série",
+          imp: "must",
+          dur: 276,
+          cat: "Action · Politique",
+          title: "Falcon et le Soldat de l\'Hiver",
+          desc: "Sam Wilson et Bucky Barnes affrontent le Flag Smasher et un faux Captain America.",
+          poster: "posters/falcon.jpg",
+        },
+        {
+          phase: 4,
+          n: 25,
+          key: "loki1",
+          type: "série",
+          imp: "must",
+          dur: 246,
+          cat: "Aventure · Sci-fi",
+          title: "Loki (saison 1)",
+          desc: "La variante de Loki est recrutée par la TVA pour traquer une version encore plus dangereuse de lui-même.",
+          poster: "posters/loki1.jpg",
+        },
+        {
+          phase: 4,
+          n: 26,
+          key: "bw",
+          type: "film",
+          imp: "film",
+          dur: 134,
+          cat: "Espionnage · Action",
+          title: "Black Widow",
+          desc: "Natasha Romanoff affronte son passé et démantèle le programme Red Room qui a créé les Veuves Noires.",
+          poster: "posters/bw.jpg",
+        },
+        {
+          phase: 4,
+          n: 27,
+          key: "whatif1",
+          type: "série",
+          imp: "bonus",
+          dur: 210,
+          cat: "Animation · Anthologie",
+          title: "What If…? (saison 1)",
+          desc: "Et si les événements clés du MCU avaient pris un chemin différent ? Univers alternatifs animés.",
+          poster: "posters/whatif1.jpg",
+        },
+        {
+          phase: 4,
+          n: 28,
+          key: "sc",
+          type: "film",
+          imp: "film",
+          dur: 132,
+          cat: "Arts martiaux · Aventure",
+          title: "Shang-Chi et la Légende des Dix Anneaux",
+          desc: "Shang-Chi est entraîné dans le monde des Dix Anneaux par son père, chef d\'une organisation secrète.",
+          poster: "posters/sc.jpg",
+        },
+        {
+          phase: 4,
+          n: 29,
+          key: "eternals",
+          type: "film",
+          imp: "film",
+          dur: 157,
+          cat: "Mythologie · Épique",
+          title: "Éternels",
+          desc: "Des êtres immortels vivant secrètement sur Terre depuis des millénaires se réunissent face à une menace.",
+          poster: "posters/eternals.jpg",
+        },
+        {
+          phase: 4,
+          n: 30,
+          key: "hawkeye",
+          type: "série",
+          imp: "film",
+          dur: 264,
+          cat: "Action · Noël",
+          title: "Hawkeye",
+          desc: "Clint Barton à New York à Noël tente de rentrer chez lui, mais son passé de Ronin le rattrape.",
+          poster: "posters/hawkeye.jpg",
+        },
+        {
+          phase: 4,
+          n: 31,
+          key: "sm3",
+          type: "film",
+          imp: "must",
+          dur: 148,
+          cat: "Super-héros · Multivers",
+          title: "Spider-Man: No Way Home",
+          desc: "Peter demande à Strange d\'effacer son identité, ouvrant le multivers et convoquant des villains.",
+          poster: "posters/sm3.jpg",
+        },
+        {
+          phase: 4,
+          n: 32,
+          key: "moonk",
+          type: "série",
+          imp: "film",
+          dur: 270,
+          cat: "Psychologique · Mythologie",
+          title: "Moon Knight",
+          desc: "Marc Spector, mercenaire atteint de troubles dissociatifs, est l\'avatar du dieu égyptien Khonshu.",
+          poster: "posters/moonk.jpg",
+        },
+        {
+          phase: 4,
+          n: 33,
+          key: "ds2",
+          type: "film",
+          imp: "must",
+          dur: 126,
+          cat: "Horreur · Multivers",
+          title: "Doctor Strange in the Multiverse of Madness",
+          desc: "Strange plonge dans le multivers pour protéger America Chavez des griffes de la Scarlet Witch.",
+          poster: "posters/ds2.jpg",
+        },
+        {
+          phase: 4,
+          n: 34,
+          key: "msmarvel",
+          type: "série",
+          imp: "film",
+          dur: 177,
+          cat: "Super-héros · Ado",
+          title: "Ms. Marvel",
+          desc: "Kamala Khan, fan absolue de super-héros, découvre qu\'elle possède elle-même des pouvoirs cristallins.",
+          poster: "posters/msmarvel.jpg",
+        },
+        {
+          phase: 4,
+          n: 35,
+          key: "thor4",
+          type: "film",
+          imp: "film",
+          dur: 119,
+          cat: "Super-héros · Comédie",
+          title: "Thor: Love and Thunder",
+          desc: "Thor affronte Gorr le Boucher de Dieux, pendant que Jane Foster devient la nouvelle Thor.",
+          poster: "posters/thor4.jpg",
+        },
+        {
+          phase: 4,
+          n: 36,
+          key: "shehulk",
+          type: "série",
+          imp: "bonus",
+          dur: 270,
+          cat: "Comédie · Juridique",
+          title: "She-Hulk: Avocate",
+          desc: "Jennifer Walters, avocate spécialisée en droit des super-humains, doit gérer ses pouvoirs de Hulk.",
+          poster: "posters/shehulk.jpg",
+        },
+        {
+          phase: 4,
+          n: 37,
+          key: "bp2",
+          type: "film",
+          imp: "must",
+          dur: 161,
+          cat: "Super-héros · Deuil",
+          title: "Black Panther: Wakanda Forever",
+          desc: "Le Wakanda endeuillé fait face à Namor et Talokan. Qui sera le nouveau Black Panther?",
+          poster: "posters/bp2.jpg",
+        },
+        {
+          phase: 5,
+          n: 38,
+          key: "antman3",
+          type: "film",
+          imp: "film",
+          dur: 125,
+          cat: "Super-héros · Sci-fi",
+          title: "Ant-Man et la Guêpe: Quantumania",
+          desc: "Scott Lang et sa famille sont piégés dans le Royaume Quantique et rencontrent Kang le Conquérant.",
+          poster: "posters/antman3.jpg",
+        },
+        {
+          phase: 5,
+          n: 39,
+          key: "si",
+          type: "série",
+          imp: "film",
+          dur: 240,
+          cat: "Espionnage · Sci-fi",
+          title: "Secret Invasion",
+          desc: "Nick Fury découvre une invasion secrète de Skrulls infiltrant les hautes sphères du pouvoir terrestre.",
+          poster: "posters/si.jpg",
+        },
+        {
+          phase: 5,
+          n: 40,
+          key: "gotg3",
+          type: "film",
+          imp: "must",
+          dur: 150,
+          cat: "Super-héros · Émotion",
+          title: "Les Gardiens de la Galaxie Vol. 3",
+          desc: "Le passé de Rocket est révélé alors que les Gardiens affrontent le Suprême Évolutionnaire.",
+          poster: "posters/gotg3.jpg",
+        },
+        {
+          phase: 5,
+          n: 41,
+          key: "loki2",
+          type: "série",
+          imp: "must",
+          dur: 270,
+          cat: "Sci-fi · Voyage temporel",
+          title: "Loki (saison 2)",
+          desc: "Loki navigue dans le temps pour sauver la TVA, affrontant une crise multiverselle existentielle.",
+          poster: "posters/loki2.jpg",
+        },
+        {
+          phase: 5,
+          n: 42,
+          key: "marvels",
+          type: "film",
+          imp: "film",
+          dur: 105,
+          cat: "Super-héros · Action",
+          title: "The Marvels",
+          desc: "Carol Danvers, Kamala Khan et Monica Rambeau échangent leurs places quand elles utilisent leurs pouvoirs.",
+          poster: "posters/marvels.jpg",
+        },
+        {
+          phase: 5,
+          n: 43,
+          key: "whatif2",
+          type: "série",
+          imp: "bonus",
+          dur: 184,
+          cat: "Animation · Anthologie",
+          title: "What If…? (saison 2)",
+          desc: "Nouvelles histoires dans des réalités alternatives du multivers Marvel, animées en style unique.",
+          poster: "posters/whatif2.jpg",
+        },
+        {
+          phase: 5,
+          n: 44,
+          key: "echo",
+          type: "série",
+          imp: "film",
+          dur: 170,
+          cat: "Action · Identité",
+          title: "Echo",
+          desc: "Maya Lopez retourne dans sa ville natale et doit faire face à son passé et son héritage choctaw.",
+          poster: "posters/echo.jpg",
+        },
+        {
+          phase: 5,
+          n: 45,
+          key: "xmen97",
+          type: "série",
+          imp: "bonus",
+          dur: 280,
+          cat: "Animation · Super-héros",
+          title: "X-Men \'97",
+          desc: "Suite de la série animée classique des années 90. Les X-Men font face à de nouvelles menaces.",
+          poster: "posters/xmen97.jpg",
+        },
+        {
+          phase: 5,
+          n: 46,
+          key: "dpw",
+          type: "film",
+          imp: "must",
+          dur: 128,
+          cat: "Super-héros · Comédie",
+          title: "Deadpool & Wolverine",
+          desc: "Wade Wilson recruté par la TVA s\'associe à une variante de Wolverine pour sauver son univers.",
+          poster: "posters/dpw.jpg",
+        },
+        {
+          phase: 5,
+          n: 47,
+          key: "agatha",
+          type: "série",
+          imp: "film",
+          dur: 245,
+          cat: "Sorcellerie · Comédie noire",
+          title: "Agatha All Along",
+          desc: "Agatha Harkness rassemble des sorcières pour voyager sur le Chemin des Sorcières et regagner ses pouvoirs.",
+          poster: "posters/agatha.jpg",
+        },
+        {
+          phase: 5,
+          n: 48,
+          key: "whatif3",
+          type: "série",
+          imp: "bonus",
+          dur: 184,
+          cat: "Animation · Anthologie",
+          title: "What If…? (saison 3)",
+          desc: "La saison finale explore de nouveaux scénarios alternatifs du multivers MCU.",
+          poster: "posters/whatif3.jpg",
+        },
+        {
+          phase: 5,
+          n: 49,
+          key: "yfssm",
+          type: "série",
+          imp: "bonus",
+          dur: 120,
+          cat: "Animation · Spider-Man",
+          title: "Votre fidèle serviteur Spider-Man",
+          desc: "Série animée suivant Peter Parker dans un récit plus mature et stylisé.",
+          poster: "posters/yfssm.jpg",
+        },
+        {
+          phase: 5,
+          n: 50,
+          key: "ca4",
+          type: "film",
+          imp: "must",
+          dur: 118,
+          cat: "Super-héros · Politique",
+          title: "Captain America: Brave New World",
+          desc: "Sam Wilson en tant que nouveau Captain America face à Red Hulk et une crise internationale.",
+          poster: "posters/ca4.jpg",
+        },
+        {
+          phase: 5,
+          n: 51,
+          key: "dda",
+          type: "série",
+          imp: "must",
+          dur: 540,
+          cat: "Action · Drame judiciaire",
+          title: "Daredevil: Born Again",
+          desc: "Matt Murdock et Wilson Fisk s\'affrontent à nouveau dans les rues et les tribunaux de New York.",
+          poster: "posters/dda.jpg",
+        },
+        {
+          phase: 5,
+          n: 52,
+          key: "tbolts",
+          type: "film",
+          imp: "must",
+          dur: 126,
+          cat: "Super-héros · Anti-héros",
+          title: "Thunderbolts*",
+          desc: "Un groupe d\'anti-héros et anciens vilains est recruté pour une mission gouvernementale secrète.",
+          poster: "posters/tbolts.jpg",
+        },
+        {
+          phase: 5,
+          n: 53,
+          key: "ironheart",
+          type: "série",
+          imp: "film",
+          dur: 240,
+          cat: "Technologie · Drame",
+          title: "Ironheart",
+          desc: "Riri Williams, génie du MIT, crée sa propre armure high-tech et affronte une force mystique.",
+          poster: "posters/ironheart.jpg",
+        },
+        {
+          phase: 6,
+          n: 54,
+          key: "eow",
+          type: "série",
+          imp: "bonus",
+          dur: 120,
+          cat: "Animation · Wakanda",
+          title: "Eyes of Wakanda",
+          desc: "Série animée retraçant des missions secrètes de guerriers wakandais à travers l\'histoire.",
+          poster: "posters/eow.jpg",
+        },
+        {
+          phase: 6,
+          n: 55,
+          key: "mzombies",
+          type: "série",
+          imp: "bonus",
+          dur: 150,
+          cat: "Animation · Horreur",
+          title: "Marvel Zombies",
+          desc: "Dans une réalité alternative, des super-héros zombie dévastent la Terre. Des survivants résistent.",
+          poster: "posters/mzombies.jpg",
+        },
+        {
+          phase: 6,
+          n: 56,
+          key: "ff",
+          type: "film",
+          imp: "must",
+          dur: 130,
+          cat: "Super-héros · Famille",
+          title: "Les Quatre Fantastiques: First Steps",
+          desc: "L\'équipe la plus célèbre de Marvel fait son entrée dans le MCU avec Reed Richards et sa famille.",
+          poster: "posters/ff.jpg",
+        },
+        {
+          phase: 6,
+          n: 57,
+          key: "doom",
+          type: "film",
+          imp: "must",
+          dur: 150,
+          cat: "Super-héros · Épique",
+          title: "Avengers: Doomsday",
+          desc: "Les Avengers font face à Kang dans une bataille qui décide du sort de tous les univers.",
+          poster: "posters/doom.jpg",
+        },
+        {
+          phase: 6,
+          n: 58,
+          key: "sm4",
+          type: "film",
+          imp: "must",
+          dur: 130,
+          cat: "Super-héros · Aventure",
+          title: "Spider-Man 4: Brand New Day",
+          desc: "Peter Parker repart de zéro dans un monde qui a oublié Spider-Man, pour un nouveau chapitre.",
+          poster: "posters/sm4.jpg",
+        },
+        {
+          phase: 6,
+          n: 59,
+          key: "sw",
+          type: "film",
+          imp: "must",
+          dur: 150,
+          cat: "Super-héros · Final",
+          title: "Avengers: Secret Wars",
+          desc: "Le combat ultime rassemble toutes les variantes et tous les univers pour la bataille finale du multivers.",
+          poster: "posters/sw.jpg",
+        },
+      ];
+
+      const PHASE_META = {
+        1: { name: "Phase 1", sub: "Les Origines", cls: "p1" },
+        2: { name: "Phase 2", sub: "L'Expansion", cls: "p2" },
+        3: { name: "Phase 3", sub: "La Saga de l'Infini", cls: "p3" },
+        4: { name: "Phase 4", sub: "Le Multivers", cls: "p4" },
+        5: { name: "Phase 5", sub: "La Saga du Multivers", cls: "p5" },
+        6: { name: "Phase 6", sub: "À venir", cls: "p6" },
+      };
+
+      const PRE_DONE = ["ca1", "im1"];
+      let done = new Set(),
+        ratings = {};
+      try {
+        const s = localStorage.getItem("mcu_v4");
+        done = new Set(s ? JSON.parse(s) : []);
+      } catch (e) {}
+      try {
+        ratings = JSON.parse(localStorage.getItem("mcu_v4_r") || "{}");
+      } catch (e) {}
+      if (done.size === 0) PRE_DONE.forEach((k) => done.add(k));
+
+      let filter = "all",
+        query = "",
+        confettiFired = false;
+
+      function save() {
+        try {
+          localStorage.setItem("mcu_v4", JSON.stringify([...done]));
+        } catch (e) {}
+      }
+      function saveR() {
+        try {
+          localStorage.setItem("mcu_v4_r", JSON.stringify(ratings));
+        } catch (e) {}
+      }
+
+      /* theme */
+      function toggleTheme() {
+        const l = document.documentElement.classList.toggle("light");
+        try {
+          localStorage.setItem("mcu_theme", l ? "light" : "dark");
+        } catch (e) {}
+      }
+      (function () {
+        try {
+          if (localStorage.getItem("mcu_theme") === "light")
+            document.documentElement.classList.add("light");
+        } catch (e) {}
+      })();
+
+      /* filter */
+      function setFilter(f) {
+        filter = f;
+        document
+          .querySelectorAll(".pill")
+          .forEach((p) => (p.className = "pill"));
+        const btn = document.querySelector(`[data-filter="${f}"]`);
+        if (f === "all") btn.classList.add("active");
+        else if (f === "film") btn.classList.add("active-film");
+        else if (f === "serie") btn.classList.add("active-serie");
+        else btn.classList.add("active-must");
+        applyVisibility();
+      }
+
+      function applyVisibility() {
+        const q = query.trim().toLowerCase();
+        let visible = 0;
+        document.querySelectorAll(".film-row").forEach((row) => {
+          const t = row.dataset.type,
+            i = row.dataset.imp,
+            tl = row.dataset.title;
+          const mf =
+            filter === "all"
+              ? true
+              : filter === "film"
+                ? t === "film"
+                : filter === "serie"
+                  ? t === "série"
+                  : i === "must";
+          if (mf && (!q || tl.includes(q))) {
+            row.classList.remove("hidden");
+            visible++;
+          } else row.classList.add("hidden");
+        });
+        document.querySelectorAll(".phase-block").forEach((b) => {
+          b.style.display = [...b.querySelectorAll(".film-row")].some(
+            (r) => !r.classList.contains("hidden"),
+          )
+            ? ""
+            : "none";
+        });
+        document.getElementById("empty-msg").style.display =
+          visible === 0 ? "block" : "none";
+      }
+
+      /* toggle */
+      function toggle(key, el) {
+        if (done.has(key)) done.delete(key);
+        else {
+          done.add(key);
+          el.classList.add("just-checked");
+          setTimeout(() => el.classList.remove("just-checked"), 380);
+        }
+        save();
+        updateRow(el, key);
+        updateStats();
+        checkConfetti();
+      }
+      function updateRow(el, key) {
+        const d = done.has(key);
+        el.classList.toggle("done", d);
+        el.querySelector(".check-svg").style.display = d ? "block" : "none";
+      }
+
+      /* rating */
+      const SCORE_LABELS = [
+        "Pas vu",
+        "Claqué",
+        "Bof",
+        "Ca passe",
+        "Super",
+        "Masterclass",
+      ];
+      const SCORE_CLS = ["s0", "s1", "s2", "s3", "s4", "s5"];
+
+      function setRating(key, val) {
+        ratings[key] = val;
+        saveR();
+        const wrap = document.getElementById("r-" + key);
+        if (!wrap) return;
+        wrap
+          .querySelectorAll(".star")
+          .forEach((s, i) => s.classList.toggle("active", i < val));
+        const score = wrap.querySelector(".rating-score");
+        score.className = "rating-score " + SCORE_CLS[val];
+        score.textContent = SCORE_LABELS[val];
+      }
+      function hoverStars(key, idx) {
+        const wrap = document.getElementById("r-" + key);
+        if (wrap)
+          wrap
+            .querySelectorAll(".star")
+            .forEach((s, i) => s.classList.toggle("hovered", i < idx));
+      }
+      function unhoverStars(key) {
+        const wrap = document.getElementById("r-" + key);
+        if (wrap)
+          wrap
+            .querySelectorAll(".star")
+            .forEach((s) => s.classList.remove("hovered"));
+      }
+
+      /* time format */
+      function fmt(m) {
+        if (m < 60) return m + "min";
+        const h = Math.floor(m / 60),
+          mn = m % 60;
+        return h + "h" + (mn ? String(mn).padStart(2, "0") : "");
+      }
+
+      /* stats */
+      function updateStats() {
+        const total = items.length,
+          seen = done.size,
+          pct = Math.round((seen / total) * 100);
+        document.getElementById("prog-label").textContent =
+          `${seen} / ${total} vus`;
+        document.getElementById("prog-pct").textContent = pct + "%";
+        document.getElementById("prog-bar").style.width = pct + "%";
+        document.getElementById("footer-stat").textContent =
+          `${seen} / ${total} vus`;
+        document.getElementById("prog-bar").style.background =
+          pct >= 100
+            ? "linear-gradient(90deg,#52c97a,#34d399)"
+            : "linear-gradient(90deg,var(--p1),var(--p4))";
+
+        const phases = [...new Set(items.map((i) => i.phase))];
+        phases.forEach((p) => {
+          const phi = items.filter((i) => i.phase === p);
+          const phd = phi.filter((i) => done.has(i.key)).length;
+          const se = document.getElementById("ps-" + p),
+            fe = document.getElementById("pf-" + p),
+            me = document.getElementById("ms-" + p);
+          if (se) se.textContent = `${phd}/${phi.length}`;
+          if (fe) fe.style.width = Math.round((phd / phi.length) * 100) + "%";
+          if (me) {
+            me.textContent = `P${p}: ${phd}/${phi.length}`;
+            me.classList.toggle("done-phase", phd === phi.length);
+          }
+        });
+
+        const totM = items.reduce((a, i) => a + i.dur, 0);
+        const doneM = items
+          .filter((i) => done.has(i.key))
+          .reduce((a, i) => a + i.dur, 0);
+        const leftM = totM - doneM,
+          leftC = total - seen;
+        document.getElementById("time-total").textContent = fmt(totM);
+        document.getElementById("time-done").textContent = fmt(doneM);
+        document.getElementById("time-done-sub").textContent =
+          `${seen} titre${seen > 1 ? "s" : ""} coché${seen > 1 ? "s" : ""}`;
+        document.getElementById("time-left").textContent = fmt(leftM);
+        document.getElementById("time-left-sub").textContent =
+          `${leftC} titre${leftC > 1 ? "s" : ""} restant${leftC > 1 ? "s" : ""}`;
+
+        document.getElementById("completion-banner").style.display =
+          seen === total ? "block" : "none";
+      }
+
+      function checkConfetti() {
+        if (done.size === items.length && !confettiFired) {
+          confettiFired = true;
+          launchConfetti();
+        } else if (done.size < items.length) confettiFired = false;
+      }
+      function resetAll() {
+        done = new Set(PRE_DONE);
+        confettiFired = false;
+        save();
+        document
+          .querySelectorAll(".film-row")
+          .forEach((el) => updateRow(el, el.dataset.key));
+        updateStats();
+      }
+
+      /* confetti */
+      function launchConfetti() {
+        const cv = document.getElementById("confetti-canvas");
+        cv.style.display = "block";
+        const ctx = cv.getContext("2d");
+        cv.width = window.innerWidth;
+        cv.height = window.innerHeight;
+        const cols = [
+          "#4a9eff",
+          "#52c97a",
+          "#ff8c42",
+          "#a78bfa",
+          "#f472b6",
+          "#34d399",
+          "#fbbf24",
+          "#f87171",
+        ];
+        const ps = Array.from({ length: 200 }, () => ({
+          x: Math.random() * cv.width,
+          y: Math.random() * -350 - 50,
+          vx: (Math.random() - 0.5) * 3,
+          vy: Math.random() * 4.5 + 2,
+          r: Math.random() * 6 + 3,
+          color: cols[Math.floor(Math.random() * cols.length)],
+          angle: Math.random() * Math.PI * 2,
+          spin: (Math.random() - 0.5) * 0.22,
+          shape: Math.random() > 0.5 ? "rect" : "circle",
+          w: Math.random() * 12 + 5,
+          h: Math.random() * 5 + 3,
+        }));
+        let frame = 0;
+        function draw() {
+          ctx.clearRect(0, 0, cv.width, cv.height);
+          ps.forEach((p) => {
+            p.y += p.vy;
+            p.x += p.vx;
+            p.angle += p.spin;
+            p.vy += 0.07;
+            ctx.save();
+            ctx.translate(p.x, p.y);
+            ctx.rotate(p.angle);
+            ctx.fillStyle = p.color;
+            ctx.globalAlpha = Math.max(0, 1 - frame / 290);
+            if (p.shape === "rect") ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+            else {
+              ctx.beginPath();
+              ctx.arc(0, 0, p.r / 2, 0, Math.PI * 2);
+              ctx.fill();
+            }
+            ctx.restore();
+          });
+          frame++;
+          if (frame < 320) requestAnimationFrame(draw);
+          else {
+            cv.style.display = "none";
+            ctx.clearRect(0, 0, cv.width, cv.height);
+          }
+        }
+        draw();
+      }
+
+      /* render */
+      function render() {
+        const phases = [...new Set(items.map((i) => i.phase))];
+        document.getElementById("mini-stats").innerHTML = phases
+          .map(
+            (p) =>
+              `<span class="mini-stat" id="ms-${p}">P${p}: 0/${items.filter((i) => i.phase === p).length}</span>`,
+          )
+          .join("");
+
+        let html = "",
+          cur = null;
+        items.forEach((item) => {
+          if (item.phase !== cur) {
+            if (cur !== null) html += `</div></div>`;
+            cur = item.phase;
+            const m = PHASE_META[cur],
+              phi = items.filter((i) => i.phase === cur);
+            html += `<div class="phase-block ${m.cls}">
+<div class="phase-header"><div class="phase-line"></div><span class="phase-tag">${m.name} · ${m.sub}</span><span class="phase-stat-pill" id="ps-${cur}">0/${phi.length}</span><div class="phase-line"></div></div>
+<div class="phase-minibar"><div class="phase-minibar-fill" id="pf-${cur}"></div></div>
+<div class="film-rows">`;
+          }
+          const d = done.has(item.key),
+            r = ratings[item.key] || 0;
+          const impLbl =
+            item.imp === "must"
+              ? "Essentiel"
+              : item.type === "film"
+                ? "Film"
+                : item.type === "série"
+                  ? "Série"
+                  : "Bonus";
+          const impCls = `imp-${item.imp === "must" ? "must" : item.type === "série" ? "serie" : item.imp === "bonus" ? "bonus" : "film"}`;
+          const starsHtml = [1, 2, 3, 4, 5]
+            .map(
+              (i) =>
+                `<button class="star${i <= r ? " active" : ""}" onclick="event.stopPropagation();setRating('${item.key}',${i})" onmouseenter="hoverStars('${item.key}',${i})" onmouseleave="unhoverStars('${item.key}')">&#9733;</button>`,
+            )
+            .join("");
+
+          html += `<div class="film-row ${PHASE_META[item.phase].cls}${d ? " done" : ""}" data-key="${item.key}" data-type="${item.type}" data-imp="${item.imp}" data-title="${item.title.toLowerCase()}" onclick="toggle('${item.key}',this)">
+  <div class="poster-wrap"><img src="${item.poster}" alt="${item.title}" loading="lazy" width="72" height="108"></div>
+  <div class="cb"><svg class="check-svg" width="13" height="11" viewBox="0 0 13 11" fill="none" style="display:${d ? "block" : "none"}"><path d="M1.5 5.5L5 9L11.5 1.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+  <div class="film-info">
+    <div class="film-top"><span class="film-num">#${item.n}</span><span class="film-title">${item.title}</span></div>
+    <div class="film-meta">
+      <span class="badge ${impCls}">${impLbl}</span>
+      <span class="dur-badge"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><circle cx="5" cy="5" r="4" stroke="currentColor" stroke-width="1.2"/><path d="M5 3v2l1.5 1" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>${fmt(item.dur)}</span>
+      <span class="cat-badge">${item.cat}</span>
+    </div>
+    <div class="film-desc">${item.desc}</div>
+  </div>
+  <div class="rating-wrap" id="r-${item.key}" onclick="event.stopPropagation()">
+    <div class="stars">${starsHtml}</div>
+    <div class="rating-score ${SCORE_CLS[r]}">${SCORE_LABELS[r]}</div>
+  </div>
+</div>`;
+        });
+        html += `</div></div>`;
+        document.getElementById("list").innerHTML = html;
+
+        // color check marks per phase
+        document.querySelectorAll(".film-row").forEach((row) => {
+          const cls = [...row.classList].find((c) => /^p\d$/.test(c));
+          const path = row.querySelector(".check-svg path");
+          if (path && cls) {
+            const map = {
+              p1: "--p1",
+              p2: "--p2",
+              p3: "--p3",
+              p4: "--p4",
+              p5: "--p5",
+              p6: "--p6",
+            };
+            path.style.stroke = getComputedStyle(document.documentElement)
+              .getPropertyValue(map[cls])
+              .trim();
+          }
+        });
+        updateStats();
+        applyVisibility();
+      }
+
+      document.getElementById("search").addEventListener("input", function () {
+        query = this.value;
+        applyVisibility();
+      });
+      render();
+    </script>
+  </body>
+</html>
