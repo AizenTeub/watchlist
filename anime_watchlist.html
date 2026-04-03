@@ -996,6 +996,41 @@
       .pn-label {
         line-height: 1;
       }
+      .translate-btn {
+        font-size: 0.72rem;
+        padding: 3px 10px;
+        border-radius: 99px;
+        border: 1px solid var(--border2);
+        background: transparent;
+        color: var(--muted);
+        cursor: pointer;
+        font-family: "DM Sans", sans-serif;
+        transition: all 0.18s var(--ease);
+        margin-top: 6px;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+      }
+      .translate-btn:hover {
+        color: var(--acc);
+        border-color: var(--acc);
+        background: var(--acct);
+      }
+      .translate-btn.loading {
+        opacity: 0.6;
+        pointer-events: none;
+      }
+      .lang-select {
+        font-size: 0.78rem;
+        padding: 4px 8px;
+        border-radius: 8px;
+        border: 1px solid var(--border2);
+        background: var(--surface);
+        color: var(--text);
+        font-family: "DM Sans", sans-serif;
+        cursor: pointer;
+        outline: none;
+      }
     </style>
   </head>
   <body>
@@ -1091,6 +1126,32 @@
             />
           </svg>
           <input id="search" type="text" placeholder="Rechercher un animé…" />
+        </div>
+        <div
+          style="
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+          "
+        >
+          <span style="font-size: 0.8rem; color: var(--muted)"
+            >🌐 Langue de traduction :</span
+          >
+          <select id="lang-picker" class="lang-select">
+            <option value="fr">🇫🇷 Français</option>
+            <option value="en">🇬🇧 English</option>
+            <option value="es">🇪🇸 Español</option>
+            <option value="de">🇩🇪 Deutsch</option>
+            <option value="it">🇮🇹 Italiano</option>
+            <option value="pt">🇵🇹 Português</option>
+            <option value="ja">🇯🇵 日本語</option>
+            <option value="ar">🇸🇦 العربية</option>
+            <option value="zh">🇨🇳 中文</option>
+            <option value="ru">🇷🇺 Русский</option>
+            <option value="ko">🇰🇷 한국어</option>
+          </select>
         </div>
         <div class="pills">
           <button
@@ -2736,44 +2797,53 @@
           const initials = getInitials(a.title || "");
 
           row.innerHTML = `
-            <div class="poster-wrap">
-              <img src="${imgSrc}" alt="${a.title}" loading="lazy"
-                onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-              <div class="poster-fallback" style="display:none">
-                <span>${initials}</span>
-                <small>#${i + 1}</small>
-              </div>
-            </div>
-            <div class="anime-info">
-              <div class="anime-top">
-                <span class="anime-num">#${i + 1}</span>
-                <span class="anime-title">${a.title || ""}</span>
-              </div>
-              <div class="anime-meta">
-                <span class="eps-badge">${epText}${sText ? " · " + sText : ""}</span>
-                ${dur ? `<span class="dur-badge"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><circle cx="5" cy="5" r="4" stroke="currentColor" stroke-width="1.2"/><path d="M5 3v2l1.5 1" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>${fmtTime(dur)}</span>` : ""}
-                ${a.genre ? `<span class="genre-badge">${a.genre}</span>` : ""}
-              </div>
-              ${a.desc ? `<div class="anime-desc">${a.desc}</div>` : ""}
-            </div>
-            <div class="rating-wrap">
-              <div class="score-display" style="color:${scoreCol}">${scoreVal}</div>
-              <div class="score-label ${scoreCls}">${
-                scoreCls === "s-none"
-                  ? "—"
-                  : scoreCls === "s-red"
-                    ? "Mauvais"
-                    : scoreCls === "s-orange"
-                      ? "Moyen"
-                      : scoreCls === "s-yellow"
-                        ? "Bien"
-                        : scoreCls === "s-lime"
-                          ? "Très bien"
-                          : "Chef-d'œuvre"
-              }</div>
-            </div>
-            <button class="del-btn" onclick="deleteAnime('${a.id || a._id || i}',this.closest('.anime-row'))" title="Supprimer">✕</button>
-          `;
+  <div class="poster-wrap">
+    <img src="${imgSrc}" alt="${a.title}" loading="lazy"
+      onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+    <div class="poster-fallback" style="display:none">
+      <span>${initials}</span>
+      <small>#${i + 1}</small>
+    </div>
+  </div>
+  <div class="anime-info">
+    <div class="anime-top">
+      <span class="anime-num">#${i + 1}</span>
+      <span class="anime-title">${a.title || ""}</span>
+    </div>
+    <div class="anime-meta">
+      <span class="eps-badge">${epText}${sText ? " · " + sText : ""}</span>
+      ${dur ? `<span class="dur-badge"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><circle cx="5" cy="5" r="4" stroke="currentColor" stroke-width="1.2"/><path d="M5 3v2l1.5 1" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>${fmtTime(dur)}</span>` : ""}
+      ${a.genre ? `<span class="genre-badge">${a.genre}</span>` : ""}
+    </div>
+    ${
+      a.desc
+        ? `
+      <p class="anime-desc" id="desc-${a.id}">${a.desc}</p>
+      <button class="translate-btn" onclick="translateDesc('${a.id}', \`${a.desc.replace(/`/g, "'")}\`)">
+        🌐 Traduire
+      </button>
+    `
+        : ""
+    }
+  </div>
+  <div class="rating-wrap">
+    <div class="score-display" style="color:${scoreCol}">${scoreVal}</div>
+    <div class="score-label ${scoreCls}">${
+      scoreCls === "s-none"
+        ? "—"
+        : scoreCls === "s-red"
+          ? "Mauvais"
+          : scoreCls === "s-orange"
+            ? "Moyen"
+            : scoreCls === "s-yellow"
+              ? "Bien"
+              : scoreCls === "s-lime"
+                ? "Très bien"
+                : "Chef-d'œuvre"
+    }</div>
+  </div>
+  <button class="del-btn" onclick="deleteAnime('${a.id || a._id || i}', this.closest('.anime-row'))" title="Supprimer">✕</button>
+`;
           list.appendChild(row);
         });
         updateStats();
@@ -2945,6 +3015,43 @@
 
       loadData();
       renderList();
+      async function translateDesc(animeId, originalText) {
+        const lang = document.getElementById("lang-picker").value;
+        const descEl = document.getElementById("desc-" + animeId);
+        const btn = descEl.nextElementSibling;
+
+        // Si déjà dans la langue d'origine (fr) → restaure
+        if (lang === "fr") {
+          descEl.textContent = originalText;
+          btn.textContent = "🌐 Traduire";
+          return;
+        }
+
+        btn.classList.add("loading");
+        btn.textContent = "⏳ Traduction…";
+
+        try {
+          const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(originalText)}&langpair=fr|${lang}`;
+          const res = await fetch(url);
+          const data = await res.json();
+
+          if (data.responseStatus === 200) {
+            descEl.textContent = data.responseData.translatedText;
+            btn.textContent = "↩️ Texte original";
+            btn.onclick = () => {
+              descEl.textContent = originalText;
+              btn.textContent = "🌐 Traduire";
+              btn.onclick = () => translateDesc(animeId, originalText);
+            };
+          } else {
+            btn.textContent = "❌ Erreur";
+          }
+        } catch (e) {
+          btn.textContent = "❌ Pas de connexion";
+        } finally {
+          btn.classList.remove("loading");
+        }
+      }
     </script>
     <nav class="page-nav">
       <a
