@@ -854,6 +854,72 @@
         color: var(--text);
         background: var(--surface2);
       }
+      .comment-toggle {
+        font-size: 0.8rem;
+        color: var(--muted);
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 2px 6px;
+        margin-left: 8px;
+        transition:
+          color 0.2s,
+          transform 0.3s var(--ease);
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .comment-toggle:hover {
+        color: var(--text);
+      }
+      .comment-toggle.open {
+        transform: rotate(180deg);
+      }
+      .comment-indicator {
+        width: 6px;
+        height: 6px;
+        background: #22c55e;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+      .comment-section {
+        max-height: 0;
+        overflow: hidden;
+        transition:
+          max-height 0.3s var(--ease),
+          margin 0.3s var(--ease),
+          padding 0.3s var(--ease);
+        margin: 0;
+        padding: 0;
+      }
+      .comment-section.open {
+        max-height: 200px;
+        margin-bottom: 10px;
+        padding-bottom: 8px;
+      }
+      .comment-textarea {
+        width: 100%;
+        min-height: 50px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        color: var(--text);
+        padding: 8px;
+        font-family: inherit;
+        font-size: 0.82rem;
+        resize: none;
+        outline: none;
+        transition:
+          border-color 0.2s,
+          background 0.2s;
+      }
+      .comment-textarea::placeholder {
+        color: var(--faint);
+      }
+      .comment-textarea:focus {
+        border-color: var(--p1);
+        background: var(--bg3);
+      }
       .s0 {
         color: var(--muted);
         border-color: var(--border);
@@ -2091,13 +2157,17 @@
 
       const PRE_DONE = ["ca1", "im1"];
       let done = new Set(),
-        ratings = {};
+        ratings = {},
+        comments = {};
       try {
         const s = localStorage.getItem("mcu_v4");
         done = new Set(s ? JSON.parse(s) : []);
       } catch (e) {}
       try {
         ratings = JSON.parse(localStorage.getItem("mcu_v4_r") || "{}");
+      } catch (e) {}
+      try {
+        comments = JSON.parse(localStorage.getItem("mcu_v4_c") || "{}");
       } catch (e) {}
       if (done.size === 0) PRE_DONE.forEach((k) => done.add(k));
 
@@ -2113,6 +2183,11 @@
       function saveR() {
         try {
           localStorage.setItem("mcu_v4_r", JSON.stringify(ratings));
+        } catch (e) {}
+      }
+      function saveC() {
+        try {
+          localStorage.setItem("mcu_v4_c", JSON.stringify(comments));
         } catch (e) {}
       }
 
@@ -2255,6 +2330,28 @@
             .forEach((s) => s.classList.remove("hovered"));
       }
 
+      function toggleComment(key) {
+        const commentEl = document.getElementById("c-" + key);
+        const arrowEl = document.getElementById("a-" + key);
+        commentEl.classList.toggle("open");
+        arrowEl.classList.toggle("open");
+      }
+
+      function saveComment(key) {
+        const textarea = document.getElementById("t-" + key);
+        const btn = document.getElementById("a-" + key);
+        comments[key] = textarea.value;
+        saveC();
+        if (textarea.value.trim()) {
+          if (!btn.querySelector(".comment-indicator")) {
+            btn.innerHTML = '▼<span class="comment-indicator"></span>';
+          }
+        } else {
+          const indicator = btn.querySelector(".comment-indicator");
+          if (indicator) indicator.remove();
+        }
+      }
+
       /* time format */
       function fmt(m) {
         if (m < 60) return m + "min";
@@ -2341,6 +2438,7 @@
         const data = {
           done: [...done],
           ratings: ratings,
+          comments: comments,
           theme: localStorage.getItem("mcu_theme") || "dark",
           version: "v4",
         };
@@ -2366,9 +2464,11 @@
             const data = JSON.parse(e.target.result);
             if (data.done) done = new Set(data.done);
             if (data.ratings) ratings = data.ratings;
+            if (data.comments) comments = data.comments;
             if (data.theme) localStorage.setItem("mcu_theme", data.theme);
             save();
             saveR();
+            saveC();
             if (data.theme === "light")
               document.documentElement.classList.add("light");
             else document.documentElement.classList.remove("light");
@@ -2494,6 +2594,9 @@
   <div class="cb"><svg class="check-svg" width="13" height="11" viewBox="0 0 13 11" fill="none" style="display:${d ? "block" : "none"}"><path d="M1.5 5.5L5 9L11.5 1.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
   <div class="film-info">
     <div class="film-top"><span class="film-num">#${item.n}</span><span class="film-title">${item.title}</span></div>
+    <div class="comment-section" id="c-${item.key}">
+      <textarea class="comment-textarea" id="t-${item.key}" placeholder="Ajoute ton récap ou tes notes..." oninput="saveComment('${item.key}')">${comments[item.key] || ""}</textarea>
+    </div>
     <div class="film-meta">
       <span class="badge ${impCls}">${impLbl}</span>
       <span class="dur-badge"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><circle cx="5" cy="5" r="4" stroke="currentColor" stroke-width="1.2"/><path d="M5 3v2l1.5 1" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>${fmt(item.dur)}</span>
@@ -2506,6 +2609,7 @@
     <div class="rating-bottom">
       <div class="rating-score ${SCORE_CLS[r]}" onclick="setRating('${item.key}', 0)">${SCORE_LABELS[r]}</div>
       <button class="rating-reset" onclick="setRating('${item.key}', 0)" title="Réinitialiser la note">×</button>
+      <button class="comment-toggle" id="a-${item.key}" onclick="toggleComment('${item.key}')" title="Commentaire">▼${comments[item.key] ? '<span class="comment-indicator"></span>' : ""}</button>
     </div>
   </div>
 </div>`;
