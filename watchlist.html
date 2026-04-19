@@ -2584,17 +2584,17 @@
             )
             .join("");
 
-          html += `<div class="film-row ${PHASE_META[item.phase].cls}${d ? " done" : ""}" data-key="${item.key}" data-type="${item.type}" data-imp="${item.imp}" data-title="${item.title.toLowerCase()}" onclick="toggle('${item.key}',this)">
-  <div class="poster-wrap"><img src="${item.poster}" alt="${item.title}" loading="lazy" width="72" height="108" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="poster-fallback" style="display:none">${item.title
+          html += `<div class="film-row ${PHASE_META[item.phase].cls}${d ? " done" : ""}" data-key="${item.key}" data-type="${item.type}" data-imp="${item.imp}" data-title="${item.title.toLowerCase()}">
+  <div class="poster-wrap" onclick="event.stopPropagation(); toggle('${item.key}', this.closest('.film-row'))"><img src="${item.poster}" alt="${item.title}" loading="lazy" width="72" height="108" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="poster-fallback" style="display:none">${item.title
     .split(" ")
     .filter((w) => w.length > 1)
     .map((w) => w[0].toUpperCase())
     .slice(0, 3)
     .join("")}</div></div>
-  <div class="cb"><svg class="check-svg" width="13" height="11" viewBox="0 0 13 11" fill="none" style="display:${d ? "block" : "none"}"><path d="M1.5 5.5L5 9L11.5 1.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+  <div class="cb" onclick="event.stopPropagation(); toggle('${item.key}', this.closest('.film-row'))"><svg class="check-svg" width="13" height="11" viewBox="0 0 13 11" fill="none" style="display:${d ? "block" : "none"}"><path d="M1.5 5.5L5 9L11.5 1.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
   <div class="film-info">
     <div class="film-top"><span class="film-num">#${item.n}</span><span class="film-title">${item.title}</span></div>
-    <div class="comment-section" id="c-${item.key}">
+    <div class="comment-section" id="c-${item.key}" onclick="event.stopPropagation()">
       <textarea class="comment-textarea" id="t-${item.key}" placeholder="Ajoute ton récap ou tes notes..." oninput="saveComment('${item.key}')">${comments[item.key] || ""}</textarea>
     </div>
     <div class="film-meta">
