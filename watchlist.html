@@ -6,8 +6,13 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, minimum-scale=1.0"
     />
-    <title>MCU Watchlist — Univers Marvel</title>
+    <title>MCU Watchlist</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      rel="icon"
+      type="image/pjpg"
+      href="https://p1.hiclipart.com/preview/878/208/854/avengers-endgame-2019-avengers-logo-avengers-logo-png-clipart.jpg"
+    />
     <link
       href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap"
       rel="stylesheet"
@@ -247,7 +252,6 @@
         margin-top: 4px;
       }
 
-      /* GLOBAL PROGRESS */
       .global-prog {
         background: var(--surface);
         border: 1px solid var(--border);
@@ -828,6 +832,7 @@
           color 0.25s,
           border-color 0.25s;
         white-space: nowrap;
+        cursor: pointer;
       }
       .s0 {
         color: var(--muted);
@@ -1231,17 +1236,30 @@
           >
             Tout
           </button>
-          <button class="pill" data-filter="film" onclick="setFilter('film')">
-            Films
-          </button>
-          <button class="pill" data-filter="série" onclick="setFilter('serie')">
-            Séries
-          </button>
           <button class="pill" data-filter="must" onclick="setFilter('must')">
             Essentiels
           </button>
+          <button class="pill" data-filter="film" onclick="setFilter('film')">
+            Films
+          </button>
+          <button class="pill" data-filter="serie" onclick="setFilter('serie')">
+            Séries
+          </button>
         </div>
-        <button class="btn-reset" onclick="resetAll()">Réinitialiser</button>
+        <div style="display: flex; gap: 8px; align-items: center">
+          <button class="btn-reset" onclick="exportData()">Exporter</button>
+          <label class="btn-reset" style="cursor: pointer">
+            Importer
+            <input
+              type="file"
+              id="import-file"
+              accept=".json"
+              style="display: none"
+              onchange="importData(event)"
+            />
+          </label>
+          <button class="btn-reset" onclick="resetAll()">Réinitialiser</button>
+        </div>
       </div>
 
       <div id="list"></div>
@@ -1467,7 +1485,7 @@
           title: "Black Panther",
           desc: "T\'Challa retourne au Wakanda pour y régner mais son trône est contesté par Erik Killmonger.",
           poster:
-            "https://image.tmdb.org/t/p/w500/uxzzxijgPIY7slzFvMotPv8wjKA.jpg",
+            "https://image.tmdb.org/t/p/original/g94IcdzPswTYl1ISdgn2EwvaZtt.jpg",
         },
         {
           phase: 3,
@@ -1480,7 +1498,7 @@
           title: "Doctor Strange",
           desc: "Chirurgien brillant, Stephen Strange découvre les arts mystiques et devient gardien de la Terre.",
           poster:
-            "https://image.tmdb.org/t/p/w500/uGBVAWjjA55V6UEhfia9jMiZTCb.jpg",
+            "https://image.tmdb.org/t/p/original/7wZ7mx7tY5SgflQKuJmQvwu3wGm.jpg",
         },
         {
           phase: 3,
@@ -1493,7 +1511,7 @@
           title: "Spider-Man: Homecoming",
           desc: "Peter Parker jongle entre le lycée et sa vie de super-héros, tout en affrontant le Vautour.",
           poster:
-            "https://image.tmdb.org/t/p/w500/c24sv2weTHPsmDa7jEMN0m2P3RT.jpg",
+            "https://image.tmdb.org/t/p/original/77Z0g5fc1qWJ7SfHyeiHsMkYx5O.jpg",
         },
         {
           phase: 3,
@@ -1506,7 +1524,7 @@
           title: "Thor: Ragnarok",
           desc: "Thor prisonnier doit s\'échapper d\'une planète de gladiateurs pour sauver Asgard de sa destruction.",
           poster:
-            "https://image.tmdb.org/t/p/w500/rzRwTcFvttcN1ZpX2xv4j3tSdJu.jpg",
+            "https://image.tmdb.org/t/p/original/mAA8RXkgF87jSWWMSf6hgLl73mk.jpg",
         },
         {
           phase: 3,
@@ -1519,7 +1537,7 @@
           title: "Ant-Man et la Guêpe",
           desc: "Scott Lang aide Hank Pym et Hope Van Dyne à sauver Janet de la dimension quantique.",
           poster:
-            "https://image.tmdb.org/t/p/w500/eivQmig5YhFVosCJpSbNGhsyDF.jpg",
+            "https://image.tmdb.org/t/p/original/2hq8EKF6kaUyOxB9KhmIb5JUxEe.jpg",
         },
         {
           phase: 3,
@@ -1532,7 +1550,7 @@
           title: "Avengers: Infinity War",
           desc: "Thanos rassemble les Pierres de l\'Infini pour effacer la moitié de la vie dans l\'univers.",
           poster:
-            "https://image.tmdb.org/t/p/w500/7WsyChQLEftFiDOVTGkv3hFpyyt.jpg",
+            "https://image.tmdb.org/t/p/original/hSfuKPtyEryeFzapZ8UgZd4aESu.jpg",
         },
         {
           phase: 3,
@@ -1545,7 +1563,7 @@
           title: "Avengers: Endgame",
           desc: "Les Avengers voyagent dans le temps pour inverser le claquement de doigts de Thanos. L\'ultime bataille.",
           poster:
-            "https://image.tmdb.org/t/p/w500/or06FN3Dka5tukK1e9sl16pB3iy.jpg",
+            "https://image.tmdb.org/t/p/original/wF7jv3x51hXgkl7t5KHePuRjXc8.jpg",
         },
         {
           phase: 3,
@@ -1558,7 +1576,7 @@
           title: "Spider-Man: Far From Home",
           desc: "Peter Parker en vacances en Europe fait face à Mysterio et aux conséquences de la mort de Stark.",
           poster:
-            "https://image.tmdb.org/t/p/w500/lcq8dVxeeOqHvvgcte707K0KVx5.jpg",
+            "https://www.sonypictures.fr/sites/france2/files/2021-10/SPE-affiche-SPIDER-MAN-FAR-FROM-HOME.jpg",
         },
         {
           phase: 4,
@@ -1571,7 +1589,7 @@
           title: "WandaVision",
           desc: "Wanda et Vision vivent dans des sitcoms de différentes époques. Une réalité parfaite qui cache l\'horreur.",
           poster:
-            "https://image.tmdb.org/t/p/w500/glKDfE6btIRcmuj5Georgian3DR.jpg",
+            "https://fr.web.img2.acsta.net/c_310_420/pictures/21/02/01/16/54/3730739.jpg",
         },
         {
           phase: 4,
@@ -1584,7 +1602,7 @@
           title: "Falcon et le Soldat de l\'Hiver",
           desc: "Sam Wilson et Bucky Barnes affrontent le Flag Smasher et un faux Captain America.",
           poster:
-            "https://image.tmdb.org/t/p/w500/6kbAMLteGO8yyewYau6bJ683sw7.jpg",
+            "https://fr.web.img6.acsta.net/pictures/21/02/08/11/16/4714705.jpg",
         },
         {
           phase: 4,
@@ -1597,7 +1615,7 @@
           title: "Loki (saison 1)",
           desc: "La variante de Loki est recrutée par la TVA pour traquer une version encore plus dangereuse de lui-même.",
           poster:
-            "https://image.tmdb.org/t/p/w500/kEl2t3OhXc3Zb9FBh1AuYzRTgZp.jpg",
+            "https://m.media-amazon.com/images/I/81xETRmcFwL._AC_UF1000,1000_QL80_.jpg",
         },
         {
           phase: 4,
@@ -1610,7 +1628,7 @@
           title: "Black Widow",
           desc: "Natasha Romanoff affronte son passé et démantèle le programme Red Room qui a créé les Veuves Noires.",
           poster:
-            "https://image.tmdb.org/t/p/w500/qAZ0pzat24kLdO3o8ejmbLxyOac.jpg",
+            "https://lumiere-a.akamaihd.net/v1/images/image_b97b56f3.jpeg?region=0,0,540,810",
         },
         {
           phase: 4,
@@ -1623,7 +1641,7 @@
           title: "What If…? (saison 1)",
           desc: "Et si les événements clés du MCU avaient pris un chemin différent ? Univers alternatifs animés.",
           poster:
-            "https://image.tmdb.org/t/p/w500/lztz5XBMG1x6Y5ubz7CxfPFUBY.jpg",
+            "https://fr.web.img4.acsta.net/c_310_420/pictures/21/07/09/10/46/0300683.jpg",
         },
         {
           phase: 4,
@@ -1636,7 +1654,7 @@
           title: "Shang-Chi et la Légende des Dix Anneaux",
           desc: "Shang-Chi est entraîné dans le monde des Dix Anneaux par son père, chef d\'une organisation secrète.",
           poster:
-            "https://image.tmdb.org/t/p/w500/1BIoJGKbXjdFDAqUEiA2VHqkK1Z.jpg",
+            "https://fr.web.img6.acsta.net/c_310_420/pictures/21/08/25/11/54/3128925.jpg",
         },
         {
           phase: 4,
@@ -1649,7 +1667,7 @@
           title: "Éternels",
           desc: "Des êtres immortels vivant secrètement sur Terre depuis des millénaires se réunissent face à une menace.",
           poster:
-            "https://image.tmdb.org/t/p/w500/bcCBq9N1EMo3n7stQlkABiwIkiR.jpg",
+            "https://fr.web.img6.acsta.net/pictures/21/10/13/10/33/5985249.jpg",
         },
         {
           phase: 4,
@@ -1662,7 +1680,7 @@
           title: "Hawkeye",
           desc: "Clint Barton à New York à Noël tente de rentrer chez lui, mais son passé de Ronin le rattrape.",
           poster:
-            "https://image.tmdb.org/t/p/w500/pqzjCxPVc9TkVgGRWeAoMmyqkZV.jpg",
+            "https://m.media-amazon.com/images/M/MV5BOGU5ZDBlOTAtOTZmYS00MWE0LTg0NzktNDcxZGJhN2FhZmM2XkEyXkFqcGc@._V1_.jpg",
         },
         {
           phase: 4,
@@ -1675,7 +1693,7 @@
           title: "Spider-Man: No Way Home",
           desc: "Peter demande à Strange d\'effacer son identité, ouvrant le multivers et convoquant des villains.",
           poster:
-            "https://image.tmdb.org/t/p/w500/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg",
+            "https://fr.web.img4.acsta.net/pictures/21/11/16/10/01/4860598.jpg",
         },
         {
           phase: 4,
@@ -1688,7 +1706,7 @@
           title: "Moon Knight",
           desc: "Marc Spector, mercenaire atteint de troubles dissociatifs, est l\'avatar du dieu égyptien Khonshu.",
           poster:
-            "https://image.tmdb.org/t/p/w500/6Z8dh2yhsHHpNczFUqDnBLvpuXH.jpg",
+            "https://m.media-amazon.com/images/M/MV5BNDAzNmYwZjgtNDc3YS00ZDMyLTk0MjktMTg4MGNmNGU3MjlhXkEyXkFqcGc@._V1_.jpg",
         },
         {
           phase: 4,
@@ -1701,7 +1719,7 @@
           title: "Doctor Strange in the Multiverse of Madness",
           desc: "Strange plonge dans le multivers pour protéger America Chavez des griffes de la Scarlet Witch.",
           poster:
-            "https://image.tmdb.org/t/p/w500/9Gtg2DzBhmYamXBS1hKAhiwbBKS.jpg",
+            "https://fr.web.img5.acsta.net/pictures/22/04/08/10/30/1779137.jpg",
         },
         {
           phase: 4,
@@ -1714,7 +1732,7 @@
           title: "Ms. Marvel",
           desc: "Kamala Khan, fan absolue de super-héros, découvre qu\'elle possède elle-même des pouvoirs cristallins.",
           poster:
-            "https://image.tmdb.org/t/p/w500/y3eEgWKUMM0YknuFdpvdXBfgUDH.jpg",
+            "https://fr.web.img3.acsta.net/c_310_420/pictures/22/04/20/09/46/0733661.jpg",
         },
         {
           phase: 4,
@@ -1727,7 +1745,7 @@
           title: "Thor: Love and Thunder",
           desc: "Thor affronte Gorr le Boucher de Dieux, pendant que Jane Foster devient la nouvelle Thor.",
           poster:
-            "https://image.tmdb.org/t/p/w500/pIkRyD18kl4FhoCNQuWxWu5cBLM.jpg",
+            "https://fr.web.img5.acsta.net/c_310_420/pictures/22/05/24/11/16/2411535.jpg",
         },
         {
           phase: 4,
@@ -1740,7 +1758,7 @@
           title: "She-Hulk: Avocate",
           desc: "Jennifer Walters, avocate spécialisée en droit des super-humains, doit gérer ses pouvoirs de Hulk.",
           poster:
-            "https://image.tmdb.org/t/p/w500/hJfI6AGrmr4uSHRNfTabGXAXiRg.jpg",
+            "https://m.media-amazon.com/images/M/MV5BNjg4ZTQ1MjctNzEyMS00YWM2LTk1ZTQtNDU3ZDJjNjhhMDhkXkEyXkFqcGc@._V1_.jpg",
         },
         {
           phase: 4,
@@ -1753,7 +1771,7 @@
           title: "Black Panther: Wakanda Forever",
           desc: "Le Wakanda endeuillé fait face à Namor et Talokan. Qui sera le nouveau Black Panther?",
           poster:
-            "https://image.tmdb.org/t/p/w500/sv1xJUazXoYjWRvYhOoAJuuFPQn.jpg",
+            "https://i.jeuxactus.com/datas/evenements/m/a/marvel-cinematic-universe/xl/marvel-cinematic-universe-633b5fba8f040.jpg",
         },
         {
           phase: 5,
@@ -1766,7 +1784,7 @@
           title: "Ant-Man et la Guêpe: Quantumania",
           desc: "Scott Lang et sa famille sont piégés dans le Royaume Quantique et rencontrent Kang le Conquérant.",
           poster:
-            "https://image.tmdb.org/t/p/w500/qnqGbB22YJ7dSs4o6M7exTpNxPz.jpg",
+            "https://fr.web.img6.acsta.net/pictures/23/01/10/11/56/4907182.jpg",
         },
         {
           phase: 5,
@@ -1779,7 +1797,7 @@
           title: "Secret Invasion",
           desc: "Nick Fury découvre une invasion secrète de Skrulls infiltrant les hautes sphères du pouvoir terrestre.",
           poster:
-            "https://image.tmdb.org/t/p/w500/tKEczjEBaFNHBHbhCPqzBiLYLhX.jpg",
+            "https://fr.web.img4.acsta.net/pictures/23/06/09/12/56/2191412.jpg",
         },
         {
           phase: 5,
@@ -1792,7 +1810,7 @@
           title: "Les Gardiens de la Galaxie Vol. 3",
           desc: "Le passé de Rocket est révélé alors que les Gardiens affrontent le Suprême Évolutionnaire.",
           poster:
-            "https://image.tmdb.org/t/p/w500/r2J02Z2OpNTctfOSN1Ydgii51I3.jpg",
+            "https://fr.web.img3.acsta.net/c_310_420/pictures/23/02/13/11/43/2783447.jpg",
         },
         {
           phase: 5,
@@ -1805,7 +1823,7 @@
           title: "Loki (saison 2)",
           desc: "Loki navigue dans le temps pour sauver la TVA, affrontant une crise multiverselle existentielle.",
           poster:
-            "https://image.tmdb.org/t/p/w500/1X4h40fcB4WWUmIBK0auT4zRBAV.jpg",
+            "https://static.wikia.nocookie.net/marvelstudios/images/e/e4/IM_2888.jpeg/revision/latest?cb=20230731154940&path-prefix=fr",
         },
         {
           phase: 5,
@@ -1818,7 +1836,7 @@
           title: "The Marvels",
           desc: "Carol Danvers, Kamala Khan et Monica Rambeau échangent leurs places quand elles utilisent leurs pouvoirs.",
           poster:
-            "https://image.tmdb.org/t/p/w500/Ag3D9qXjhJ2FUkrlJ0Cv1pgxqYQ.jpg",
+            "https://lumiere-a.akamaihd.net/v1/images/image_167d5a00.jpeg",
         },
         {
           phase: 5,
@@ -1831,7 +1849,7 @@
           title: "What If…? (saison 2)",
           desc: "Nouvelles histoires dans des réalités alternatives du multivers Marvel, animées en style unique.",
           poster:
-            "https://image.tmdb.org/t/p/w500/wMq9kQXTeQCHUZOG4fAe5cAxyUA.jpg",
+            "https://upload.wikimedia.org/wikipedia/en/thumb/b/b4/What_If...%3F_season_2_poster.jpeg/250px-What_If...%3F_season_2_poster.jpeg",
         },
         {
           phase: 5,
@@ -1844,7 +1862,7 @@
           title: "Echo",
           desc: "Maya Lopez retourne dans sa ville natale et doit faire face à son passé et son héritage choctaw.",
           poster:
-            "https://image.tmdb.org/t/p/w500/lOSdUkGQmbAl5JQ3QoHqBZUbZhC.jpg",
+            "https://fr.web.img3.acsta.net/pictures/23/11/06/10/12/4992840.jpg",
         },
         {
           phase: 5,
@@ -1857,7 +1875,7 @@
           title: "X-Men \'97",
           desc: "Suite de la série animée classique des années 90. Les X-Men font face à de nouvelles menaces.",
           poster:
-            "https://image.tmdb.org/t/p/w500/woMnyykOCM5h1GYOdHjfIKFOoiE.jpg",
+            "https://m.media-amazon.com/images/M/MV5BZDE0Zjk5OGYtZTk3OC00ZDZhLWE2NGQtNzc3NmJhNjljYzY5XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg",
         },
         {
           phase: 5,
@@ -1870,7 +1888,7 @@
           title: "Deadpool & Wolverine",
           desc: "Wade Wilson recruté par la TVA s\'associe à une variante de Wolverine pour sauver son univers.",
           poster:
-            "https://image.tmdb.org/t/p/w500/8cdWjvZQUExUUTzyp4t6EDMubfO.jpg",
+            "https://fr.web.img5.acsta.net/img/e4/cd/e4cd101f2e66f4e7818fcf53d05c006a.jpg",
         },
         {
           phase: 5,
@@ -1883,7 +1901,7 @@
           title: "Agatha All Along",
           desc: "Agatha Harkness rassemble des sorcières pour voyager sur le Chemin des Sorcières et regagner ses pouvoirs.",
           poster:
-            "https://image.tmdb.org/t/p/w500/8bkOGCn9aVuFBhbRgaHkFQgNMia.jpg",
+            "https://m.media-amazon.com/images/M/MV5BMDcyZTNjOTEtNzc5Yy00Y2UzLThkMWYtNTY4YmM4OWI5OTMzXkEyXkFqcGc@._V1_.jpg",
         },
         {
           phase: 5,
@@ -1896,7 +1914,7 @@
           title: "What If…? (saison 3)",
           desc: "La saison finale explore de nouveaux scénarios alternatifs du multivers MCU.",
           poster:
-            "https://image.tmdb.org/t/p/w500/lztz5XBMG1x6Y5ubz7CxfPFUBY.jpg",
+            "https://www.ecranlarge.com/content/uploads/2024/12/a35ab2bfbf297c52ceebaca8bb5778d9_jpg.jpg",
         },
         {
           phase: 5,
@@ -1909,7 +1927,7 @@
           title: "Votre fidèle serviteur Spider-Man",
           desc: "Série animée suivant Peter Parker dans un récit plus mature et stylisé.",
           poster:
-            "https://image.tmdb.org/t/p/w500/yXibbMHO1yPIrdOCeKZmvBnZ9GH.jpg",
+            "https://fr.web.img2.acsta.net/img/79/ed/79ed45cca4d6108610cd318a519b2365.jpg",
         },
         {
           phase: 5,
@@ -1921,8 +1939,7 @@
           cat: "Super-héros · Politique",
           title: "Captain America: Brave New World",
           desc: "Sam Wilson en tant que nouveau Captain America face à Red Hulk et une crise internationale.",
-          poster:
-            "https://image.tmdb.org/t/p/w500/pzIddUEMWhWzfvLI3TwxUG2wGoi.jpg",
+          poster: "https://m.media-amazon.com/images/I/81EHzokTAGL.jpg",
         },
         {
           phase: 5,
@@ -1935,7 +1952,7 @@
           title: "Daredevil: Born Again",
           desc: "Matt Murdock et Wilson Fisk s\'affrontent à nouveau dans les rues et les tribunaux de New York.",
           poster:
-            "https://image.tmdb.org/t/p/w500/Ae3Kh5OQFqzUIOe64TRMnL4FKPJ.jpg",
+            "https://fr.web.img6.acsta.net/img/8c/6c/8c6c4659ab0bc0764f06e2bf7c487d05.jpg",
         },
         {
           phase: 5,
@@ -1948,7 +1965,7 @@
           title: "Thunderbolts*",
           desc: "Un groupe d\'anti-héros et anciens vilains est recruté pour une mission gouvernementale secrète.",
           poster:
-            "https://image.tmdb.org/t/p/w500/m9EtP1WMbHUzADnn3L5rC7sMiMF.jpg",
+            "https://m.media-amazon.com/images/M/MV5BMTA5M2U3OGItYjllMS00ZTE4LWIyMDctZTIzMmM3MzEwNmY0XkEyXkFqcGc@._V1_.jpg",
         },
         {
           phase: 5,
@@ -1961,7 +1978,7 @@
           title: "Ironheart",
           desc: "Riri Williams, génie du MIT, crée sa propre armure high-tech et affronte une force mystique.",
           poster:
-            "https://image.tmdb.org/t/p/w500/xTHCMTiCNSFb9pCPiPTSwCUCxoB.jpg",
+            "https://m.media-amazon.com/images/M/MV5BN2EzMGZhOTktYjVhZi00NmIwLWIxZDEtNWUxZTQyNjhkYWQ4XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg",
         },
         {
           phase: 6,
@@ -1974,7 +1991,7 @@
           title: "Eyes of Wakanda",
           desc: "Série animée retraçant des missions secrètes de guerriers wakandais à travers l\'histoire.",
           poster:
-            "https://image.tmdb.org/t/p/w500/lztz5XBMG1x6Y5ubz7CxfPFUBY.jpg",
+            "https://cdn.marvel.com/content/2x/eyesofwakanda_lob_crd_02.jpg",
         },
         {
           phase: 6,
@@ -1987,7 +2004,7 @@
           title: "Marvel Zombies",
           desc: "Dans une réalité alternative, des super-héros zombie dévastent la Terre. Des survivants résistent.",
           poster:
-            "https://image.tmdb.org/t/p/w500/lztz5XBMG1x6Y5ubz7CxfPFUBY.jpg",
+            "https://fr.web.img6.acsta.net/c_310_420/img/b8/bf/b8bfb2d7f12f1d4d28b4d8a833eff6a9.jpg",
         },
         {
           phase: 6,
@@ -2000,7 +2017,7 @@
           title: "Les Quatre Fantastiques: First Steps",
           desc: "L\'équipe la plus célèbre de Marvel fait son entrée dans le MCU avec Reed Richards et sa famille.",
           poster:
-            "https://image.tmdb.org/t/p/w500/b57xAR9SWuUFKNFJFfhBdHqDRg4.jpg",
+            "https://m.media-amazon.com/images/M/MV5BOGM5MzA3MDAtYmEwMi00ZDNiLTg4MDgtMTZjOTc0ZGMyNTIwXkEyXkFqcGc@._V1_.jpg",
         },
         {
           phase: 6,
@@ -2105,13 +2122,13 @@
         else if (f === "serie") btn.classList.add("active-serie");
         else btn.classList.add("active-must");
         applyVisibility();
+        updateStats();
       }
-
       function applyVisibility() {
         const q = query.trim().toLowerCase();
         let visible = 0;
         document.querySelectorAll(".film-row").forEach((row) => {
-          const t = row.dataset.type,
+          const t = normalizeType(row.dataset.type),
             i = row.dataset.imp,
             tl = row.dataset.title;
           const mf =
@@ -2120,7 +2137,7 @@
               : filter === "film"
                 ? t === "film"
                 : filter === "serie"
-                  ? t === "série"
+                  ? t === "serie"
                   : i === "must";
           if (mf && (!q || tl.includes(q))) {
             row.classList.remove("hidden");
@@ -2136,6 +2153,29 @@
         });
         document.getElementById("empty-msg").style.display =
           visible === 0 ? "block" : "none";
+        return visible;
+      }
+
+      function normalizeType(value) {
+        return value.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      }
+
+      function getVisibleItems() {
+        const q = query.trim().toLowerCase();
+        return items.filter((item) => {
+          const t = normalizeType(item.type),
+            i = item.imp,
+            tl = item.title.toLowerCase();
+          const mf =
+            filter === "all"
+              ? true
+              : filter === "film"
+                ? t === "film"
+                : filter === "serie"
+                  ? t === "serie"
+                  : i === "must";
+          return mf && (!q || tl.includes(q));
+        });
       }
 
       /* toggle */
@@ -2205,9 +2245,10 @@
 
       /* stats */
       function updateStats() {
-        const total = items.length,
-          seen = done.size,
-          pct = Math.round((seen / total) * 100);
+        const visibleItems = getVisibleItems();
+        const total = visibleItems.length;
+        const seen = visibleItems.filter((i) => done.has(i.key)).length;
+        const pct = total ? Math.round((seen / total) * 100) : 0;
         document.getElementById("prog-label").textContent =
           `${seen} / ${total} vus`;
         document.getElementById("prog-pct").textContent = pct + "%";
@@ -2221,21 +2262,28 @@
 
         const phases = [...new Set(items.map((i) => i.phase))];
         phases.forEach((p) => {
-          const phi = items.filter((i) => i.phase === p);
+          const phi = visibleItems.filter((i) => i.phase === p);
           const phd = phi.filter((i) => done.has(i.key)).length;
           const se = document.getElementById("ps-" + p),
             fe = document.getElementById("pf-" + p),
             me = document.getElementById("ms-" + p);
           if (se) se.textContent = `${phd}/${phi.length}`;
-          if (fe) fe.style.width = Math.round((phd / phi.length) * 100) + "%";
+          if (fe)
+            fe.style.width =
+              phi.length > 0
+                ? Math.round((phd / phi.length) * 100) + "%"
+                : "0%";
           if (me) {
             me.textContent = `P${p}: ${phd}/${phi.length}`;
-            me.classList.toggle("done-phase", phd === phi.length);
+            me.classList.toggle(
+              "done-phase",
+              phi.length > 0 && phd === phi.length,
+            );
           }
         });
 
-        const totM = items.reduce((a, i) => a + i.dur, 0);
-        const doneM = items
+        const totM = visibleItems.reduce((a, i) => a + i.dur, 0);
+        const doneM = visibleItems
           .filter((i) => done.has(i.key))
           .reduce((a, i) => a + i.dur, 0);
         const leftM = totM - doneM,
@@ -2249,7 +2297,7 @@
           `${leftC} titre${leftC > 1 ? "s" : ""} restant${leftC > 1 ? "s" : ""}`;
 
         document.getElementById("completion-banner").style.display =
-          seen === total ? "block" : "none";
+          total > 0 && seen === total ? "block" : "none";
       }
 
       function checkConfetti() {
@@ -2262,10 +2310,56 @@
         done = new Set(PRE_DONE);
         confettiFired = false;
         save();
+        setFilter("all");
         document
           .querySelectorAll(".film-row")
           .forEach((el) => updateRow(el, el.dataset.key));
         updateStats();
+      }
+
+      function exportData() {
+        const data = {
+          done: [...done],
+          ratings: ratings,
+          theme: localStorage.getItem("mcu_theme") || "dark",
+          version: "v4",
+        };
+        const blob = new Blob([JSON.stringify(data, null, 2)], {
+          type: "application/json",
+        });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "mcu_watchlist_backup.json";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }
+
+      function importData(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          try {
+            const data = JSON.parse(e.target.result);
+            if (data.done) done = new Set(data.done);
+            if (data.ratings) ratings = data.ratings;
+            if (data.theme) localStorage.setItem("mcu_theme", data.theme);
+            save();
+            saveR();
+            if (data.theme === "light")
+              document.documentElement.classList.add("light");
+            else document.documentElement.classList.remove("light");
+            render();
+            setFilter("all");
+          } catch (err) {
+            alert("Erreur lors de l'importation : fichier invalide.");
+          }
+        };
+        reader.readAsText(file);
+        event.target.value = ""; // reset input
       }
 
       /* confetti */
@@ -2421,6 +2515,7 @@
       document.getElementById("search").addEventListener("input", function () {
         query = this.value;
         applyVisibility();
+        updateStats();
       });
       render();
     </script>
