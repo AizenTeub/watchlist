@@ -617,6 +617,14 @@
         overflow: hidden;
         border: 1px solid var(--border2);
         background: var(--faint);
+        cursor: pointer;
+        transition:
+          transform 0.25s var(--ease),
+          border-color 0.25s ease;
+      }
+      .poster-wrap:hover {
+        transform: translateY(-2px) scale(1.03);
+        border-color: var(--border);
       }
       .poster-wrap img,
       .poster-wrap svg {
@@ -1169,6 +1177,70 @@
       .page-nav-item:not(.active):active {
         transform: scale(0.97);
       }
+      .poster-viewer {
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        padding: 24px;
+      }
+      .poster-viewer.open {
+        display: flex;
+      }
+      .poster-viewer-backdrop {
+        position: absolute;
+        inset: 0;
+        background: rgba(10, 10, 15, 0.85);
+        backdrop-filter: blur(4px);
+      }
+      .poster-viewer-card {
+        position: relative;
+        width: min(92vw, 540px);
+        max-height: min(92vh, 90vh);
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 28px 70px rgba(0, 0, 0, 0.35);
+        animation: posterZoom 0.28s var(--ease);
+      }
+      .poster-viewer-card img {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+      .poster-viewer-close {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        border: none;
+        background: rgba(0, 0, 0, 0.45);
+        color: #fff;
+        font-size: 1.2rem;
+        cursor: pointer;
+        display: grid;
+        place-items: center;
+        transition:
+          transform 0.2s ease,
+          background 0.2s ease;
+      }
+      .poster-viewer-close:hover {
+        transform: scale(1.05);
+        background: rgba(0, 0, 0, 0.6);
+      }
+      @keyframes posterZoom {
+        from {
+          opacity: 0;
+          transform: scale(0.86);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
       .page-nav-divider {
         width: 1px;
         height: 22px;
@@ -1194,6 +1266,19 @@
   </head>
   <body>
     <canvas id="confetti-canvas"></canvas>
+    <div id="poster-viewer" class="poster-viewer" onclick="closePosterViewer()">
+      <div class="poster-viewer-backdrop"></div>
+      <div class="poster-viewer-card" onclick="event.stopPropagation()">
+        <img id="poster-viewer-img" src="" alt="" />
+        <button
+          class="poster-viewer-close"
+          onclick="closePosterViewer()"
+          aria-label="Fermer"
+        >
+          ×
+        </button>
+      </div>
+    </div>
     <div class="app">
       <header>
         <div>
@@ -2286,6 +2371,22 @@
         updateStats();
         checkConfetti();
       }
+
+      function openPosterViewer(src, alt) {
+        const viewer = document.getElementById("poster-viewer");
+        const img = document.getElementById("poster-viewer-img");
+        img.src = src;
+        img.alt = alt;
+        viewer.classList.add("open");
+      }
+
+      function closePosterViewer() {
+        document.getElementById("poster-viewer").classList.remove("open");
+      }
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") closePosterViewer();
+      });
       function updateRow(el, key) {
         const d = done.has(key);
         el.classList.toggle("done", d);
@@ -2585,7 +2686,7 @@
             .join("");
 
           html += `<div class="film-row ${PHASE_META[item.phase].cls}${d ? " done" : ""}" data-key="${item.key}" data-type="${item.type}" data-imp="${item.imp}" data-title="${item.title.toLowerCase()}">
-  <div class="poster-wrap" onclick="event.stopPropagation(); toggle('${item.key}', this.closest('.film-row'))"><img src="${item.poster}" alt="${item.title}" loading="lazy" width="72" height="108" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="poster-fallback" style="display:none">${item.title
+  <div class="poster-wrap" onclick="event.stopPropagation(); openPosterViewer(this.querySelector('img').src, this.querySelector('img').alt)"><img src="${item.poster}" alt="${item.title}" loading="lazy" width="72" height="108" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="poster-fallback" style="display:none">${item.title
     .split(" ")
     .filter((w) => w.length > 1)
     .map((w) => w[0].toUpperCase())
