@@ -1418,6 +1418,14 @@
           </button>
         </div>
         <div style="display: flex; gap: 8px; align-items: center">
+          <button
+            class="btn-reset"
+            id="sort-btn"
+            onclick="toggleSort()"
+            title="Trier par notes"
+          >
+            ⭐ Trier
+          </button>
           <button class="btn-reset" onclick="exportData()">Exporter</button>
           <label class="btn-reset" style="cursor: pointer">
             Importer
@@ -2258,6 +2266,7 @@
 
       let filter = "all",
         query = "",
+        sortBy = "none",
         confettiFired = false;
 
       function save() {
@@ -2303,6 +2312,21 @@
         else btn.classList.add("active-must");
         applyVisibility();
         updateStats();
+      }
+
+      function toggleSort() {
+        const orders = ["none", "rating-desc", "rating-asc"];
+        const idx = orders.indexOf(sortBy);
+        sortBy = orders[(idx + 1) % orders.length];
+        updateSortButton();
+        render();
+      }
+
+      function updateSortButton() {
+        const btn = document.getElementById("sort-btn");
+        if (sortBy === "none") btn.textContent = "⭐ Trier";
+        else if (sortBy === "rating-desc") btn.textContent = "⭐ ↑ Notes";
+        else btn.textContent = "⭐ ↓ Notes";
       }
       function applyVisibility() {
         const q = query.trim().toLowerCase();
@@ -2654,9 +2678,24 @@
           )
           .join("");
 
+        let itemsToRender = items;
+        if (sortBy === "rating-asc") {
+          itemsToRender = [...items].sort((a, b) => {
+            const rA = ratings[a.key] || 0;
+            const rB = ratings[b.key] || 0;
+            return rA - rB;
+          });
+        } else if (sortBy === "rating-desc") {
+          itemsToRender = [...items].sort((a, b) => {
+            const rA = ratings[a.key] || 0;
+            const rB = ratings[b.key] || 0;
+            return rB - rA;
+          });
+        }
+
         let html = "",
           cur = null;
-        items.forEach((item) => {
+        itemsToRender.forEach((item) => {
           if (item.phase !== cur) {
             if (cur !== null) html += `</div></div>`;
             cur = item.phase;
