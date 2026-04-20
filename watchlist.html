@@ -2264,7 +2264,7 @@
       } catch (e) {}
       if (done.size === 0) PRE_DONE.forEach((k) => done.add(k));
 
-      let filter = "all",
+      let activeFilters = new Set(["all"]),
         query = "",
         sortBy = "none",
         confettiFired = false;
@@ -2301,17 +2301,36 @@
 
       /* filter */
       function setFilter(f) {
-        filter = f;
-        document
-          .querySelectorAll(".pill")
-          .forEach((p) => (p.className = "pill"));
-        const btn = document.querySelector(`[data-filter="${f}"]`);
-        if (f === "all") btn.classList.add("active");
-        else if (f === "film") btn.classList.add("active-film");
-        else if (f === "serie") btn.classList.add("active-serie");
-        else btn.classList.add("active-must");
+        if (f === "all") {
+          activeFilters = new Set(["all"]);
+        } else {
+          activeFilters.delete("all");
+          if (activeFilters.has(f)) {
+            activeFilters.delete(f);
+          } else {
+            activeFilters.add(f);
+          }
+          if (activeFilters.size === 0) activeFilters.add("all");
+        }
+        updateFilterButtons();
         applyVisibility();
         updateStats();
+      }
+
+      function updateFilterButtons() {
+        document.querySelectorAll(".pill").forEach((btn) => {
+          const f = btn.dataset.filter;
+          btn.className = "pill";
+          if (f === "all") {
+            if (activeFilters.has("all")) btn.classList.add("active");
+          } else {
+            if (activeFilters.has(f)) {
+              if (f === "film") btn.classList.add("active-film");
+              else if (f === "serie") btn.classList.add("active-serie");
+              else btn.classList.add("active-must");
+            }
+          }
+        });
       }
 
       function toggleSort() {
@@ -2335,14 +2354,14 @@
           const t = normalizeType(row.dataset.type),
             i = row.dataset.imp,
             tl = row.dataset.title;
-          const mf =
-            filter === "all"
-              ? true
-              : filter === "film"
-                ? t === "film"
-                : filter === "serie"
-                  ? t === "serie"
-                  : i === "must";
+          let mf = false;
+          if (activeFilters.has("all")) {
+            mf = true;
+          } else {
+            if (activeFilters.has("film") && t === "film") mf = true;
+            if (activeFilters.has("serie") && t === "serie") mf = true;
+            if (activeFilters.has("must") && i === "must") mf = true;
+          }
           if (mf && (!q || tl.includes(q))) {
             row.classList.remove("hidden");
             visible++;
@@ -2370,14 +2389,14 @@
           const t = normalizeType(item.type),
             i = item.imp,
             tl = item.title.toLowerCase();
-          const mf =
-            filter === "all"
-              ? true
-              : filter === "film"
-                ? t === "film"
-                : filter === "serie"
-                  ? t === "serie"
-                  : i === "must";
+          let mf = false;
+          if (activeFilters.has("all")) {
+            mf = true;
+          } else {
+            if (activeFilters.has("film") && t === "film") mf = true;
+            if (activeFilters.has("serie") && t === "serie") mf = true;
+            if (activeFilters.has("must") && i === "must") mf = true;
+          }
           return mf && (!q || tl.includes(q));
         });
       }
@@ -2785,6 +2804,7 @@
         updateStats();
       });
       render();
+      updateFilterButtons();
     </script>
     <nav class="page-nav">
       <a href="anime_watchlist.html" class="page-nav-item">
