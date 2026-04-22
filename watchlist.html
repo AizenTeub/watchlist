@@ -2283,6 +2283,251 @@
       .wanda-quiz.snapping .wanda-quiz-container {
         animation: wandaSnap 0.6s ease forwards;
       }
+
+      /* DR STRANGE QUIZ EASTER EGG */
+      .strange-quiz {
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 2000;
+        font-family: "Bebas Neue", sans-serif;
+      }
+      .strange-quiz.active {
+        display: flex;
+      }
+      .strange-quiz-bg {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          135deg,
+          #4c1d95 0%,
+          #6366f1 50%,
+          #a855f7 100%
+        );
+        z-index: 1;
+      }
+      .strange-quiz-container {
+        position: relative;
+        z-index: 2;
+        background:
+          radial-gradient(
+            circle at top right,
+            rgba(168, 85, 247, 0.1),
+            transparent
+          ),
+          linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        border: 2px solid #a855f7;
+        border-radius: 20px;
+        padding: 3rem;
+        max-width: 600px;
+        width: 90%;
+        box-shadow:
+          0 0 40px rgba(168, 85, 247, 0.3),
+          inset 0 0 20px rgba(168, 85, 247, 0.05);
+        animation: strangeAppear 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+      @keyframes strangeAppear {
+        from {
+          opacity: 0;
+          transform: scale(0.7) rotateZ(5deg);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1) rotateZ(0);
+        }
+      }
+      .strange-quiz-header {
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+      .strange-quiz-logo {
+        width: 80px;
+        height: 120px;
+        object-fit: cover;
+        border-radius: 10px;
+        border: 2px solid #a855f7;
+        margin-bottom: 1rem;
+        box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
+      }
+      .strange-quiz-header h2 {
+        font-size: 3rem;
+        color: #a855f7;
+        margin-bottom: 0.5rem;
+        letter-spacing: 0.1em;
+        text-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
+      }
+      .strange-subtitle {
+        color: #aaa;
+        font-size: 0.9rem;
+        letter-spacing: 0.05em;
+      }
+      .strange-quiz-content {
+        color: #fff;
+      }
+      .strange-question {
+        font-size: 1.3rem;
+        margin-bottom: 2rem;
+        color: #a855f7;
+        text-align: center;
+        line-height: 1.6;
+      }
+      .strange-options {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin-bottom: 2rem;
+      }
+      .strange-option {
+        padding: 12px 16px;
+        background: rgba(168, 85, 247, 0.05);
+        border: 2px solid rgba(168, 85, 247, 0.3);
+        border-radius: 12px;
+        color: #fff;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        font-size: 0.95rem;
+        text-align: center;
+      }
+      .strange-option:hover {
+        background: rgba(168, 85, 247, 0.15);
+        border-color: #a855f7;
+        transform: translateY(-2px);
+      }
+      .strange-option.correct {
+        background: rgba(76, 175, 80, 0.3);
+        border-color: #4caf50;
+        color: #4caf50;
+        animation: correctShake 0.4s ease;
+      }
+      .strange-option.wrong {
+        background: rgba(244, 67, 54, 0.3);
+        border-color: #f44336;
+        color: #f44336;
+        animation: wrongShake 0.5s ease;
+      }
+      .strange-progress {
+        margin-top: 2rem;
+      }
+      .strange-progress-text {
+        display: block;
+        text-align: center;
+        color: #a855f7;
+        font-size: 0.9rem;
+        margin-bottom: 8px;
+        letter-spacing: 0.05em;
+      }
+      .strange-progress-bar {
+        height: 6px;
+        background: rgba(168, 85, 247, 0.1);
+        border-radius: 99px;
+        overflow: hidden;
+        border: 1px solid rgba(168, 85, 247, 0.3);
+      }
+      .strange-progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #a855f7, #7c3aed);
+        border-radius: 99px;
+        width: 20%;
+        transition: width 0.5s ease;
+      }
+      @keyframes strangeSnap {
+        0% {
+          opacity: 1;
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05) rotate(5deg);
+        }
+        100% {
+          opacity: 0;
+          transform: scale(0.3) rotate(-10deg);
+        }
+      }
+      .strange-quiz.snapping .strange-quiz-container {
+        animation: strangeSnap 0.6s ease forwards;
+      }
+
+      /* CHARACTERS SECTION */
+      .characters-section {
+        margin-top: 3rem;
+        margin-bottom: 2rem;
+      }
+      .characters-section h2 {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 2rem;
+        color: var(--text);
+        letter-spacing: 0.05em;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid var(--border);
+      }
+      .characters-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
+      }
+      .character-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        overflow: hidden;
+        transition: all 0.3s var(--ease);
+        cursor: pointer;
+      }
+      .character-card:hover {
+        transform: translateY(-4px);
+        border-color: var(--border2);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+      }
+      .character-image {
+        width: 100%;
+        height: 450px;
+        object-fit: cover;
+        background: var(--bg2);
+      }
+      .character-content {
+        padding: 1.2rem;
+      }
+      .character-name {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 1.3rem;
+        color: var(--text);
+        margin-bottom: 0.5rem;
+        letter-spacing: 0.05em;
+      }
+      .character-info {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1rem;
+        flex-wrap: wrap;
+      }
+      .character-stat {
+        font-size: 0.75rem;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+      .character-stat strong {
+        color: var(--text);
+        display: block;
+        font-size: 0.9rem;
+      }
+      .character-power {
+        font-size: 0.85rem;
+        color: var(--p1);
+        font-weight: 500;
+        margin-bottom: 0.8rem;
+        padding-bottom: 0.8rem;
+        border-bottom: 1px solid var(--faint);
+      }
+      .character-desc {
+        font-size: 0.82rem;
+        color: var(--muted);
+        line-height: 1.5;
+        font-style: italic;
+      }
     </style>
   </head>
   <body>
@@ -2305,7 +2550,7 @@
       <div class="tony-quiz-container">
         <div class="tony-quiz-header">
           <img
-            src="https://upload.wikimedia.org/wikipedia/en/e/e7/Iron_Man_%282008_film%29_poster.jpg"
+            src="https://static.wikia.nocookie.net/marvelstudios/images/b/b3/Ironman-endgameprofile.jpg/revision/latest?cb=20191226115453&path-prefix=fr"
             alt="Iron Man"
             class="tony-quiz-logo"
           />
@@ -2330,7 +2575,7 @@
       <div class="thor-quiz-container">
         <div class="thor-quiz-header">
           <img
-            src="https://image.tmdb.org/t/p/w500/q8pF6s9b9veTQvxTqMDIQf9nJKi.jpg"
+            src="https://upload.wikimedia.org/wikipedia/en/thumb/3/3c/Chris_Hemsworth_as_Thor.jpg/250px-Chris_Hemsworth_as_Thor.jpg"
             alt="Thor"
             class="thor-quiz-logo"
           />
@@ -2355,7 +2600,7 @@
       <div class="widow-quiz-container">
         <div class="widow-quiz-header">
           <img
-            src="https://image.tmdb.org/t/p/w500/6Lw54zxm6BAEKJeGlabyzzR5Juu.jpg"
+            src="https://upload.wikimedia.org/wikipedia/en/thumb/f/f6/Scarlett_Johansson_as_Black_Widow.jpg/250px-Scarlett_Johansson_as_Black_Widow.jpg"
             alt="Black Widow"
             class="widow-quiz-logo"
           />
@@ -2380,7 +2625,7 @@
       <div class="cap-quiz-container">
         <div class="cap-quiz-header">
           <img
-            src="https://image.tmdb.org/t/p/w500/l1SP3gyHA5ZEuf72WKx5ihtZZFO.jpg"
+            src="https://static.wikia.nocookie.net/heroes-fr/images/e/ef/Webstory-captain-america-cover03.jpg/revision/latest?cb=20210329212929&path-prefix=fr"
             alt="Captain America"
             class="cap-quiz-logo"
           />
@@ -2405,7 +2650,7 @@
       <div class="hulk-quiz-container">
         <div class="hulk-quiz-header">
           <img
-            src="https://image.tmdb.org/t/p/w500/cImKVGUiEnwLsNUyoMA0a0na2y5.jpg"
+            src="https://radiodisneyclub.fr/wp-content/uploads/2022/06/Hulk.jpg"
             alt="Hulk"
             class="hulk-quiz-logo"
           />
@@ -2430,7 +2675,7 @@
       <div class="wanda-quiz-container">
         <div class="wanda-quiz-header">
           <img
-            src="https://image.tmdb.org/t/p/w500/8B7oHD2tJDZuhpSvZCGtpG5zV6.jpg"
+            src="https://static.wikia.nocookie.net/heros/images/5/56/Wanda_MCU_Infobox.jpg/revision/latest?cb=20200616183452&path-prefix=fr"
             alt="Wanda Maximoff"
             class="wanda-quiz-logo"
           />
@@ -2444,6 +2689,36 @@
             <span id="wanda-progress-text">Question 1 / 5</span>
             <div class="wanda-progress-bar">
               <div id="wanda-progress-fill" class="wanda-progress-fill"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="strange-quiz" class="strange-quiz">
+      <div class="strange-quiz-bg"></div>
+      <div class="strange-quiz-container">
+        <div class="strange-quiz-header">
+          <img
+            src="https://upload.wikimedia.org/wikipedia/en/1/18/Benedict_Cumberbatch_as_Doctor_Strange.jpeg"
+            alt="Doctor Strange"
+            class="strange-quiz-logo"
+          />
+          <h2>STRANGE QUIZ</h2>
+          <p class="strange-subtitle">
+            Prouve que tu connais le Sorcier Suprême
+          </p>
+        </div>
+        <div class="strange-quiz-content">
+          <div id="strange-question" class="strange-question"></div>
+          <div id="strange-options" class="strange-options"></div>
+          <div class="strange-progress">
+            <span id="strange-progress-text">Question 1 / 5</span>
+            <div class="strange-progress-bar">
+              <div
+                id="strange-progress-fill"
+                class="strange-progress-fill"
+              ></div>
             </div>
           </div>
         </div>
@@ -2612,6 +2887,153 @@
       </div>
 
       <div id="list"></div>
+
+      <section class="characters-section">
+        <h2>🦸 Personnages Importants</h2>
+        <div class="characters-grid">
+          <div class="character-card">
+            <img
+              src="https://image.tmdb.org/t/p/w500/kNKUCNLu1lZDGAHOBEHxR6psYHx.jpg"
+              alt="Iron Man"
+              class="character-image"
+            />
+            <div class="character-content">
+              <div class="character-name">Tony Stark</div>
+              <div class="character-info">
+                <div class="character-stat">Âge<strong>48 ans</strong></div>
+                <div class="character-stat">Origine<strong>Humain</strong></div>
+              </div>
+              <div class="character-power">
+                Génie technologique, Armures Iron Man
+              </div>
+              <div class="character-desc">
+                Milliardaire narcissique qui crée l'armure Iron Man et devient
+                un Avenger malgré son égo surdimensionné.
+              </div>
+            </div>
+          </div>
+
+          <div class="character-card">
+            <img
+              src="https://image.tmdb.org/t/p/w500/q8pF6s9b9veTQvxTqMDIQf9nJKi.jpg"
+              alt="Thor"
+              class="character-image"
+            />
+            <div class="character-content">
+              <div class="character-name">Thor Odinson</div>
+              <div class="character-info">
+                <div class="character-stat">Âge<strong>1500+ ans</strong></div>
+                <div class="character-stat">
+                  Origine<strong>Asgardien</strong>
+                </div>
+              </div>
+              <div class="character-power">
+                Dieu du Tonnerre, Mjolnir, Électricité
+              </div>
+              <div class="character-desc">
+                Le dieu asgardien du tonnerre qui arrive sur Terre et rejoint
+                les Avengers pour protéger le monde.
+              </div>
+            </div>
+          </div>
+
+          <div class="character-card">
+            <img
+              src="https://static.wikia.nocookie.net/marvelstudios/images/c/ca/3198DFA3-B895-4149-AF94-F4EC7E4D9BFF.jpeg/revision/latest/scale-to-width-down/1200?cb=20210323194108&path-prefix=fr"
+              alt="Black Widow"
+              class="character-image"
+            />
+            <div class="character-content">
+              <div class="character-name">Natasha Romanoff</div>
+              <div class="character-info">
+                <div class="character-stat">Âge<strong>38 ans</strong></div>
+                <div class="character-stat">
+                  Origine<strong>Humaine</strong>
+                </div>
+              </div>
+              <div class="character-power">
+                Espionnage, Arts martiaux, Assassinat
+              </div>
+              <div class="character-desc">
+                Ancienne espionne russe convertie en héroïne. Membre clé des
+                Avengers avec ses compétences de combat exceptionnelles.
+              </div>
+            </div>
+          </div>
+
+          <div class="character-card">
+            <img
+              src="https://image.tmdb.org/t/p/w500/l1SP3gyHA5ZEuf72WKx5ihtZZFO.jpg"
+              alt="Captain America"
+              class="character-image"
+            />
+            <div class="character-content">
+              <div class="character-name">Steve Rogers</div>
+              <div class="character-info">
+                <div class="character-stat">Âge<strong>101 ans</strong></div>
+                <div class="character-stat">
+                  Origine<strong>Humain amélioré</strong>
+                </div>
+              </div>
+              <div class="character-power">
+                Force surhumaine, Bouclier vibranium, Stratégie
+              </div>
+              <div class="character-desc">
+                Le super-soldat de la Seconde Guerre Mondiale qui devient le
+                leader moral des Avengers.
+              </div>
+            </div>
+          </div>
+
+          <div class="character-card">
+            <img
+              src="https://fr.web.img2.acsta.net/c_310_420/pictures/21/02/01/16/54/3730739.jpg"
+              alt="Wanda"
+              class="character-image"
+            />
+            <div class="character-content">
+              <div class="character-name">Wanda Maximoff</div>
+              <div class="character-info">
+                <div class="character-stat">Âge<strong>28 ans</strong></div>
+                <div class="character-stat">
+                  Origine<strong>Mutante</strong>
+                </div>
+              </div>
+              <div class="character-power">
+                Manipulation de réalité, Télépathie, Énergie mystique
+              </div>
+              <div class="character-desc">
+                La Sorcière Rouge avec des pouvoirs surhumains. Elle traverse
+                une quête personnelle de vengeance et de rédemption.
+              </div>
+            </div>
+          </div>
+
+          <div class="character-card">
+            <img
+              src="https://image.tmdb.org/t/p/original/7wZ7mx7tY5SgflQKuJmQvwu3wGm.jpg"
+              alt="Doctor Strange"
+              class="character-image"
+            />
+            <div class="character-content">
+              <div class="character-name">Stephen Strange</div>
+              <div class="character-info">
+                <div class="character-stat">Âge<strong>42 ans</strong></div>
+                <div class="character-stat">
+                  Origine<strong>Humain mystique</strong>
+                </div>
+              </div>
+              <div class="character-power">
+                Magie, Portails dimensionnels, Sorcerie suprême
+              </div>
+              <div class="character-desc">
+                Neurochirurgien devenu Sorcier Suprême. Maître des arts
+                mystiques et protecteur de la réalité.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
       <div class="empty" id="empty-msg">
         <svg width="36" height="36" viewBox="0 0 32 32" fill="none">
@@ -3714,6 +4136,64 @@
         },
       ];
 
+      const STRANGE_QUESTIONS = [
+        {
+          q: "Quel était mon métier avant la magie?",
+          options: [
+            "Psychiatre",
+            "Neurochirurgien",
+            "Physicien",
+            "Mathématicien",
+          ],
+          correct: 1,
+          reason: "Neurochirurgien ! Le meilleur de ma génération.",
+        },
+        {
+          q: "Quel est mon titre officiel?",
+          options: [
+            "Magicien Suprême",
+            "Sorcier Suprême",
+            "Maître des Mystères",
+            "Gardien de la Magie",
+          ],
+          correct: 1,
+          reason: "Sorcier Suprême ! Protecteur de la réalité.",
+        },
+        {
+          q: "Quel est le nom de ma cape magique?",
+          options: [
+            "Le Manteau de Merlin",
+            "Le Cape du Temps",
+            "Le Manteau de la Lévitation",
+            "Le Linceul d'Osiris",
+          ],
+          correct: 2,
+          reason: "Le Manteau de la Lévitation. Elle a ses propres intentions.",
+        },
+        {
+          q: "Quelle est ma limitation majeure?",
+          options: [
+            "Je ne peux utiliser la magie qu'une fois par jour",
+            "Je perds mes pouvoirs au coucher du soleil",
+            "Je dois dormir 8 heures pour récupérer ma magie",
+            "La magie me coûte ma vie si j'en abuse",
+          ],
+          correct: 3,
+          reason: "Chaque sort a un prix. La magie n'est pas sans conséquence.",
+        },
+        {
+          q: "Qui m'a enseigné la magie?",
+          options: [
+            "Loki",
+            "La Sorcière Rouge",
+            "L'Ancienne (The Ancient One)",
+            "Doctor Fate",
+          ],
+          correct: 2,
+          reason: "L'Ancienne m'a tout enseigné. Une mentore incroyable.",
+        },
+      ];
+
       let tonyQuizState = {
         active: false,
         currentQuestion: 0,
@@ -4128,6 +4608,79 @@
         }, 700);
       }
 
+      // DR STRANGE QUIZ
+      let strangeQuizState = {
+        active: false,
+        currentQuestion: 0,
+        answered: false,
+      };
+
+      function startStrangeQuiz() {
+        strangeQuizState = {
+          active: true,
+          currentQuestion: 0,
+          answered: false,
+        };
+        const quiz = document.getElementById("strange-quiz");
+        quiz.classList.add("active");
+        showStrangeQuestion();
+      }
+
+      function showStrangeQuestion() {
+        const q = STRANGE_QUESTIONS[strangeQuizState.currentQuestion];
+        const questionEl = document.getElementById("strange-question");
+        const optionsEl = document.getElementById("strange-options");
+        const progressText = document.getElementById("strange-progress-text");
+        const progressFill = document.getElementById("strange-progress-fill");
+
+        questionEl.textContent = q.q;
+        optionsEl.innerHTML = "";
+        q.options.forEach((option, index) => {
+          const btn = document.createElement("button");
+          btn.className = "strange-option";
+          btn.textContent = option;
+          btn.onclick = () => answerStrangeQuestion(index);
+          optionsEl.appendChild(btn);
+        });
+
+        progressFill.style.width = `${((strangeQuizState.currentQuestion + 1) / STRANGE_QUESTIONS.length) * 100}%`;
+        progressText.textContent = `Question ${strangeQuizState.currentQuestion + 1} / ${STRANGE_QUESTIONS.length}`;
+        strangeQuizState.answered = false;
+      }
+
+      function answerStrangeQuestion(selectedIndex) {
+        if (strangeQuizState.answered) return;
+        strangeQuizState.answered = true;
+
+        const q = STRANGE_QUESTIONS[strangeQuizState.currentQuestion];
+        const options = document.querySelectorAll(".strange-option");
+
+        options.forEach((option, index) => {
+          if (index === q.correct) {
+            option.classList.add("correct");
+          } else if (index === selectedIndex && index !== q.correct) {
+            option.classList.add("wrong");
+          }
+        });
+
+        setTimeout(() => {
+          if (strangeQuizState.currentQuestion < STRANGE_QUESTIONS.length - 1) {
+            strangeQuizState.currentQuestion++;
+            showStrangeQuestion();
+          } else {
+            endStrangeQuiz();
+          }
+        }, 1000);
+      }
+
+      function endStrangeQuiz() {
+        const quiz = document.getElementById("strange-quiz");
+        quiz.classList.add("snapping");
+        setTimeout(() => {
+          quiz.classList.remove("active", "snapping");
+        }, 700);
+      }
+
       // Détection des easter eggs
       let tonyBuffer = "";
       let thorBuffer = "";
@@ -4135,6 +4688,7 @@
       let capBuffer = "";
       let hulkBuffer = "";
       let wandaBuffer = "";
+      let strangeBuffer = "";
 
       document.addEventListener("keydown", (e) => {
         const target = e.target;
@@ -4188,6 +4742,14 @@
         if (wandaBuffer === "wanda") {
           startWandaQuiz();
           wandaBuffer = "";
+        }
+
+        // Strange
+        strangeBuffer += key;
+        if (strangeBuffer.length > 8) strangeBuffer = strangeBuffer.slice(-8);
+        if (strangeBuffer === "strange" || strangeBuffer === "doctor") {
+          startStrangeQuiz();
+          strangeBuffer = "";
         }
       });
 
